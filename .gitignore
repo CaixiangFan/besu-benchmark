@@ -1,0 +1,13 @@
+# installed node nodules
+node_modules
+
+# python virtual environment
+venv
+.DS_Store
+
+# AESO data
+data
+
+# caliper benchmark results
+caliper-benchmarks/*.log
+caliper-benchmarks/*.html

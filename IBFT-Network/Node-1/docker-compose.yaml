@@ -1,0 +1,114 @@
+version: "3"
+
+networks:
+  host:
+    external: true
+
+services:
+  node-1:
+    hostname: node-1
+    networks:
+      - host
+    image: hyperledger/besu:21.10
+    deploy:
+      replicas: 1
+      restart_policy:
+          condition: on-failure
+          delay: 5s
+          max_attempts: 3
+      placement:
+          constraints:
+              - node.hostname == node-1
+    environment:
+      - BESU_CONFIG_FILE=/config/config.toml
+    ports:
+      - "8545:8545"
+      - "30303:30303"
+    user: 1000:1000
+    volumes:
+      - /home/ubuntu/IBFT-Network/Node-1/data:/opt/besu/data
+      - /home/ubuntu/IBFT-Network/Node-1/data:/opt/besu/keys
+      - /home/ubuntu/IBFT-Network/Node-1/data:/opt/besu/public-keys 
+      - /home/ubuntu/IBFT-Network/Node-1/config.toml:/config/config.toml
+      - /home/ubuntu/IBFT-Network/genesis.json:/config/genesis.json
+
+  node-2:
+    hostname: node-2
+    networks:
+      - host
+    image: hyperledger/besu:21.10
+    deploy:
+      replicas: 1
+      restart_policy:
+          condition: on-failure
+          delay: 5s
+          max_attempts: 3
+      placement:
+          constraints:
+              - node.hostname == node-2
+    environment:
+      - BESU_CONFIG_FILE=/config/config.toml
+    ports:
+      - "8546:8545"
+      - "30304:30303"
+    user: 1000:1000
+    volumes:
+      - /home/ubuntu/IBFT-Network/Node-2/data:/opt/besu/data
+      - /home/ubuntu/IBFT-Network/Node-2/data:/opt/besu/keys
+      - /home/ubuntu/IBFT-Network/Node-2/data:/opt/besu/public-keys 
+      - /home/ubuntu/IBFT-Network/Node-2/config.toml:/config/config.toml 
+      - /home/ubuntu/IBFT-Network/genesis.json:/config/genesis.json
+
+  node-3:
+    hostname: node-3
+    networks:
+      - host
+    image: hyperledger/besu:21.10
+    deploy:
+      replicas: 1
+      restart_policy:
+          condition: on-failure
+          delay: 5s
+          max_attempts: 3
+      placement:
+          constraints:
+              - node.hostname == node-3
+    environment:
+      - BESU_CONFIG_FILE=/config/config.toml
+    ports:
+      - "8547:8545"
+      - "30305:30303"
+    user: 1000:1000
+    volumes:
+      - /home/ubuntu/IBFT-Network/Node-3/data:/opt/besu/data
+      - /home/ubuntu/IBFT-Network/Node-3/data:/opt/besu/keys
+      - /home/ubuntu/IBFT-Network/Node-3/data:/opt/besu/public-keys 
+      - /home/ubuntu/IBFT-Network/Node-3/config.toml:/config/config.toml 
+      - /home/ubuntu/IBFT-Network/genesis.json:/config/genesis.json
+
+  node-4:
+    hostname: node-4
+    networks:
+      - host
+    image: hyperledger/besu:21.10
+    deploy:
+      replicas: 1
+      restart_policy:
+          condition: on-failure
+          delay: 5s
+          max_attempts: 3
+      placement:
+          constraints:
+              - node.hostname == node-4
+    environment:
+      - BESU_CONFIG_FILE=/config/config.toml
+    ports:
+      - "8548:8545"
+      - "30306:30303"
+    user: 1000:1000
+    volumes:
+      - /home/ubuntu/IBFT-Network/Node-4/data:/opt/besu/data
+      - /home/ubuntu/IBFT-Network/Node-4/data:/opt/besu/keys
+      - /home/ubuntu/IBFT-Network/Node-4/data:/opt/besu/public-keys 
+      - /home/ubuntu/IBFT-Network/Node-4/config.toml:/config/config.toml 
+      - /home/ubuntu/IBFT-Network/genesis.json:/config/genesis.json
