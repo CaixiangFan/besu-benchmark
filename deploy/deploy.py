@@ -33,13 +33,14 @@ try:
             toml.dump(config, f)
         container_id = subprocess.run(['sh', 'start.sh'], stdout=subprocess.PIPE)
         container_id = container_id.stdout.decode().replace('\n', '')
+        time.sleep(15)
         container_logs = subprocess.run(['docker', 'logs', container_id], stdout=subprocess.PIPE)
         container_logs = container_logs.stdout.decode()
         enode_url = re.findall(r"(enode?://[^\s]+)", container_logs)[0]
         redis_enode.set("enode", enode_url)
         redis_deployment_logs.set(host_ip, container_logs)
     else:
-        time.sleep(15)
+        time.sleep(30)
         enode_url = None
         while enode_url is None:
             redis_enode.get("enode").decode()
