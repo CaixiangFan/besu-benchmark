@@ -6,7 +6,7 @@ venv
 .DS_Store
 
 # AESO data
-data
+*.csv
 
 # caliper benchmark results
 caliper-benchmarks/*.log

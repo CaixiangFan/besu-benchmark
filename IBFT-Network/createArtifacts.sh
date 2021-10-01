@@ -1,4 +1,4 @@
-export BESU_HOME=/home/ubuntu/IBFT-Network
+export BESU_HOME=$(pwd)
 docker run --rm -d \
     --name besu_config \
     -v $BESU_HOME/networkFiles:/opt/besu/networkFiles \

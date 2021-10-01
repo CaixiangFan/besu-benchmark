@@ -1,4 +1,4 @@
-export BESU_HOME=/home/ubuntu/IBFT-Network
+export BESU_HOME=$(pwd)
 docker stop node3
 sleep 3
 docker run --rm -d \
