@@ -24,6 +24,8 @@ redis_hosts = Redis(host=WATCHDOG_ADDRESS, port=6379, db=1)
 redis_enode = Redis(host=WATCHDOG_ADDRESS, port=6379, db=2)
 redis_deployment_logs = Redis(host=WATCHDOG_ADDRESS, port=6379, db=3)
 
+redis_hosts.set(host_ip, hostname)
+
 try:
     is_master = redis_enode.setnx("master", host_ip)
     if is_master:
