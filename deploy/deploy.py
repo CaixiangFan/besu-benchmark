@@ -40,7 +40,13 @@ try:
         container_logs = subprocess.run(['docker', 'logs', container_id], stdout=subprocess.PIPE)
         container_logs = container_logs.stdout.decode()
         logs.append(container_logs)
-        enode_url = re.findall(r"(enode?://[^\s]+)", container_logs)[0]
+        enode_url = []
+        while len(enode_url) == 0:
+            container_logs = subprocess.run(['docker', 'logs', container_id], stdout=subprocess.PIPE)
+            container_logs = container_logs.stdout.decode()
+            logs.append(container_logs)
+            enode_url = re.findall(r"(enode?://[^\s]+)", container_logs)
+        enode_url = enode_url[0]
         redis_enode.set("enode", enode_url)
     else:
         time.sleep(30)
