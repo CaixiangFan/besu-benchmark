@@ -4,6 +4,7 @@ import subprocess
 import toml
 import socket
 import time
+import json
 
 WATCHDOG_ADDRESS = "192.168.23.64"
 
@@ -26,6 +27,8 @@ redis_deployment_logs = Redis(host=WATCHDOG_ADDRESS, port=6379, db=3)
 
 redis_hosts.set(host_ip, hostname)
 
+logs = []
+
 try:
     is_master = redis_enode.setnx("master", host_ip)
     if is_master:
@@ -36,9 +39,9 @@ try:
         time.sleep(15)
         container_logs = subprocess.run(['docker', 'logs', container_id], stdout=subprocess.PIPE)
         container_logs = container_logs.stdout.decode()
+        logs.append(container_logs)
         enode_url = re.findall(r"(enode?://[^\s]+)", container_logs)[0]
         redis_enode.set("enode", enode_url)
-        redis_deployment_logs.set(host_ip, container_logs)
     else:
         time.sleep(30)
         enode_url = None
@@ -54,7 +57,7 @@ try:
         time.sleep(15)
         container_logs = subprocess.run(['docker', 'logs', container_id], stdout=subprocess.PIPE)
         container_logs = container_logs.stdout.decode()
-        redis_deployment_logs.set(host_ip, container_logs)
-
+        logs.append(container_logs)
 except Exception as e:
-    redis_deployment_logs.set(host_ip, str(e))
+    logs.append(str(e))
+redis_deployment_logs.set(host_ip, json.dumps(logs))
