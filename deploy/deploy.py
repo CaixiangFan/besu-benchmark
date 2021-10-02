@@ -46,7 +46,7 @@ try:
         enode_url = enode_url[0]
         redis_enode.set("enode", enode_url)
     else:
-        time.sleep(30)
+        time.sleep(15)
         enode_url = None
         while enode_url is None:
             enode_url = redis_enode.get("enode")
