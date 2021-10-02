@@ -1,6 +1,7 @@
-sudo rm /etc/machine-id
-sudo systemd-machine-id-setup
+#!/bin/bash
+rm /etc/machine-id
+systemd-machine-id-setup
 cd /home/ubuntu
-git clone https://pat@github.com/CaixiangFan/bpet.git
+sudo -H -u ubuntu bash -c 'git clone https://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@github.com/CaixiangFan/bpet.git'
 cd bpet/deploy
-python3 deploy.py
+sudo -H -u ubuntu bash -c 'python3 deploy.py'

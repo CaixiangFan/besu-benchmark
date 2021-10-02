@@ -4,11 +4,9 @@
 # Redis
 ## Deployment
 ```
-docker run -d -v /opt/besu/redis-data:/data --name besu
--redis --restart=always -p 6379:6379 redis:6.2.5
+docker run -d -v /opt/besu/redis-data:/data --name besu-redis --restart=always -p 6379:6379 redis:6.2.5
 
-docker run --rm -it -e REDIS_1_HOST=127.0.0.1 -e REDIS_
-1_NAME=besu-redis -p 18001:80 erikdubbelboer/phpredisadmin
+docker run --rm -it -e REDIS_1_HOST=127.0.0.1 -e REDIS_1_NAME=besu-redis -p 18001:80 erikdubbelboer/phpredisadmin
 ```
 
 ## Schema

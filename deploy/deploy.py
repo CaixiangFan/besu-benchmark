@@ -43,8 +43,9 @@ try:
         time.sleep(30)
         enode_url = None
         while enode_url is None:
-            redis_enode.get("enode").decode()
+            enode_url = redis_enode.get("enode")
             time.sleep(5)
+        enode_url = enode_url.decode()
         config['bootnodes'] = f"""["{enode_url}"]"""
         with open('config.toml', 'w') as f:
             toml.dump(config, f)
