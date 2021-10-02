@@ -36,12 +36,9 @@ try:
             toml.dump(config, f)
         container_id = subprocess.run(['sh', 'start.sh'], stdout=subprocess.PIPE)
         container_id = container_id.stdout.decode().replace('\n', '')
-        time.sleep(15)
-        container_logs = subprocess.run(['docker', 'logs', container_id], stdout=subprocess.PIPE)
-        container_logs = container_logs.stdout.decode()
-        logs.append(container_logs)
         enode_url = []
         while len(enode_url) == 0:
+            time.sleep(5)
             container_logs = subprocess.run(['docker', 'logs', container_id], stdout=subprocess.PIPE)
             container_logs = container_logs.stdout.decode()
             logs.append(container_logs)
