@@ -52,7 +52,7 @@ try:
             enode_url = redis_enode.get("enode")
             time.sleep(5)
         enode_url = enode_url.decode()
-        config['bootnodes'] = f"""["{enode_url}"]"""
+        config['bootnodes'] = [enode_url]
         with open('config.toml', 'w') as f:
             toml.dump(config, f)
         container_id = subprocess.run(['sh', 'start.sh'], stdout=subprocess.PIPE)
