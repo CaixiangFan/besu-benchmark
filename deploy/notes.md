@@ -12,9 +12,13 @@ docker run --rm -it -e REDIS_1_HOST=127.0.0.1 -e REDIS_1_NAME=besu-redis -p 1800
 ## Schema
 * DB0 - miscellaneous
 * DB1 - hosts
-  * ip:hostname
+  * ip: {hostname: str, public_key: str, private_key:}
 * DB2 - enode
-  * enode:url
-  * master:ip
+  * master: ip
+  * enode: url
+  * genesis: str
+  * node_count: int
+  * key_bucket: list (for distribution)
+  * key_store: list (for persistent storage)
 * DB3 - deployment logs
-  * ip:logs
+  * ip: logs
