@@ -18,7 +18,7 @@ else:
     WATCHDOG_ADDRESS = sys.argv[1]
     NODE_COUNT = int(sys.argv[2])
 
-
+time.sleep(5)
 hostname = socket.gethostname()
 host_ip = socket.gethostbyname(socket.gethostname())
 
