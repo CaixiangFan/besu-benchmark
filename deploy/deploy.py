@@ -50,7 +50,7 @@ try:
         ibft_config['blockchain']['nodes']['count'] = NODE_COUNT
         # Generate genesis and keys
         with open('ibftConfigFile.json', 'w') as f:
-            json.dump(f)
+            json.dump(ibft_config, f)
         subprocess.run(['sh', 'create_artifacts.sh'])
         time.sleep(20 + NODE_COUNT * 0.2)
         # Push genesis to redis
