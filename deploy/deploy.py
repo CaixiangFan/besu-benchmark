@@ -8,7 +8,7 @@ import json
 import sys
 import os
 
-if len(sys.argv) < 1:
+if len(sys.argv) < 2:
     print('To few arguments; you need to specify 2 arguments.')
     print('Default values will be used. WATCHDOG ADDRESS is 192.168.23.64, NODE_COUNT is 5\n')
     WATCHDOG_ADDRESS = "192.168.23.64"
@@ -96,17 +96,17 @@ try:
     else:
         # node to retrieve enode URL
         time.sleep(15)
+        # Retrieve enode URL
         enode_url = None
         while enode_url is None:
             enode_url = redis_enode.get("enode")
             time.sleep(5)
-        # Retrieve enode URL
         enode_url = enode_url.decode()
         config['bootnodes'] = [enode_url]
         # Dump config.toml
         with open('config.toml', 'w') as f:
             toml.dump(config, f)
-        genesis = redis_enode.get('genesis')
+        genesis = json.loads(redis_enode.get('genesis'))
         # Dump genesis.json
         with open('genesis.json', 'w') as f:
             json.dump(genesis, f)
