@@ -21,7 +21,7 @@ else:
 # time.sleep(5)
 hostname = socket.gethostname()
 # host_ip = socket.gethostbyname(socket.gethostname())
-host_ip = subprocess.Popen(('ip', 'route', 'get', '192.168.23.64'), stdout=subprocess.PIPE)
+host_ip = subprocess.Popen(('ip', 'route', 'get', WATCHDOG_ADDRESS), stdout=subprocess.PIPE)
 host_ip = subprocess.check_output(['awk', '{print $7}'], stdin=host_ip.stdout)
 host_ip = host_ip.decode().replace('\n', '')
 
