@@ -21,9 +21,9 @@ else:
 # time.sleep(5)
 hostname = socket.gethostname()
 # host_ip = socket.gethostbyname(socket.gethostname())
-host_ip = subprocess.Popen(('ip', 'route', 'get', WATCHDOG_ADDRESS), stdout=subprocess.PIPE)
-host_ip = subprocess.check_output(['awk', '{print $7}'], stdin=host_ip.stdout)
-host_ip = host_ip.decode().replace('\n', '')
+host_ip = subprocess.run(['ip', 'route', 'get', '192.168.23.64'], stdout=subprocess.PIPE)
+host_ip = host_ip.stdout.decode().split(' ')
+host_ip = host_ip[host_ip.index('src') + 1]
 
 with open('config-template.toml', 'r') as f:
     config = toml.load(f)
