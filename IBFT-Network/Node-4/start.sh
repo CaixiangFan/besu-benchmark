@@ -1,13 +1,12 @@
-export BESU_HOME=$(pwd)
-docker stop node4
-sleep 3
+#!bin/bash
+docker stop $(docker ps -q)
+sleep 2
+export HOSTNAME=$(hostname)
 docker run --rm -d \
-    --name node4 \
+    --name $HOSTNAME \
     --net host \
-    -v $BESU_HOME/Node-4/data:/opt/besu/data \
-    -v $BESU_HOME/Node-4/data:/opt/besu/keys \
-    -v $BESU_HOME/Node-4/data:/opt/besu/public-keys \
-    -v $BESU_HOME/genesis.json:/config/genesis.json \
-    -v $BESU_HOME/Node-4/config.toml:/config/config.toml \
+    -v ${PWD}/data:/opt/besu/data \
+    -v ${PWD}/../genesis.json:/config/genesis.json \
+    -v ${PWD}/config.toml:/config/config.toml \
     hyperledger/besu:21.10 \
     --config-file=/config/config.toml
