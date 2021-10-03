@@ -26,10 +26,16 @@ with open('config-template.toml', 'r') as f:
     config = toml.load(f)
 
 config['identity'] = hostname
-config['p2p-host'] = host_ip
-config['rpc-http-host'] = host_ip
-config['rpc-ws-host'] = host_ip
-config['metrics-push-host'] = host_ip
+# config['p2p-host'] = host_ip
+# config['rpc-http-host'] = host_ip
+# config['rpc-ws-host'] = host_ip
+# config['metrics-push-host'] = host_ip
+
+config['p2p-host'] = '0.0.0.0'
+config['rpc-http-host'] = '0.0.0.0'
+config['rpc-ws-host'] = '0.0.0.0'
+config['metrics-push-host'] = '127.0.0.1'
+config['metrics-push-enabled'] = False
 
 redis_miscellaneous = Redis(host=WATCHDOG_ADDRESS, port=6379, db=0)
 redis_hosts = Redis(host=WATCHDOG_ADDRESS, port=6379, db=1)
@@ -91,6 +97,11 @@ try:
             logs.append(container_logs)
             enode_url = re.findall(r"(enode?://[^\s]+)", container_logs)
         enode_url = enode_url[0]
+        # ------
+        enode_url = enode_url.split('@')
+        enode_url[1] = f'@{host_ip}:30303'
+        enode_url = ''.join(enode_url)
+        # -----
         # Set enode URL
         redis_enode.set("enode", enode_url)
     else:
