@@ -4,10 +4,11 @@ node_modules
 # python virtual environment
 venv
 .DS_Store
+.vscode/
 
 # AESO data
 *.csv
 
 # caliper benchmark results
 caliper-benchmarks/*.log
-caliper-benchmarks/*.html
+*.html
