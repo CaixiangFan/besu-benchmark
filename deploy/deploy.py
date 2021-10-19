@@ -18,9 +18,12 @@ else:
     WATCHDOG_ADDRESS = sys.argv[1]
     NODE_COUNT = int(sys.argv[2])
 
-
+# time.sleep(5)
 hostname = socket.gethostname()
-host_ip = socket.gethostbyname(socket.gethostname())
+# host_ip = socket.gethostbyname(socket.gethostname())
+host_ip = subprocess.run(['ip', 'route', 'get', '192.168.23.64'], stdout=subprocess.PIPE)
+host_ip = host_ip.stdout.decode().split(' ')
+host_ip = host_ip[host_ip.index('src') + 1]
 
 with open('config-template.toml', 'r') as f:
     config = toml.load(f)
