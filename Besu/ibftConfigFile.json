@@ -37,7 +37,7 @@
     "blockchain": {
       "nodes": {
         "generate": true,
-          "count": 40
+          "count": 4
       }
     }
    }
