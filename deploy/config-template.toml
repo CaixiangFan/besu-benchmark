@@ -1,4 +1,4 @@
-logging="INFO"
+logging="DEBUG"
 identity="node1"
 data-path="/opt/besu/data"
 genesis-file="/config/genesis.json"
@@ -30,7 +30,3 @@ metrics-enabled=true
 # metrics-push-enabled=true
 # metrics-push-port=9091
 # metrics-push-host="0.0.0.0"
-
-# logging defult is "INFO"
-
-logging="DEBUG"
