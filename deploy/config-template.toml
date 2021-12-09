@@ -31,5 +31,6 @@ metrics-enabled=true
 # metrics-push-port=9091
 # metrics-push-host="0.0.0.0"
 
-# logging, defult is "INFO"
+# logging defult is "INFO"
+
 logging="DEBUG"
