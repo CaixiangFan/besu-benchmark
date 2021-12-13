@@ -1,9 +1,11 @@
-import yaml, subprocess, os, json
+import yaml, subprocess, os, json, sys
 from datetime import datetime
-import numpy as np
 
-connection_url = "ws://10.2.10.182:8546" # 4 nodes on Cybera
-# connection_url = "ws://192.168.226.166:8546" # 50 nodes on CC
+DEFAULT_IP = '192.168.226.64'
+SEND_RATES = [50, 100, 150, 200, 250]
+connection_url = "ws://" + DEFAULT_IP + ":8546"
+if len(sys.argv) > 1:
+    connection_url = "ws://" + sys.argv[1] + ":8546"
 networkconfig = 'networks/4node-ibft2/networkconfig.json'
 with open(networkconfig, 'r') as f:
     data = json.load(f)
@@ -17,10 +19,9 @@ directory = 'reports-' + timestampStr
 path = os.path.join(os.getcwd(), directory)
 os.mkdir(path)
 
-sendrates = [50, 100, 150, 200, 250]
 replicas = 5 # test replicas for each send rate
 rounds = 3 # test rounds: open, query and transfer
-for tps in sendrates:
+for tps in SEND_RATES:
     with open('benchmarks/scenario/simple/config.yaml','r') as f:
         y=yaml.safe_load(f)
         for i in range(rounds):
