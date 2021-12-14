@@ -9,6 +9,7 @@ venv
 # csv and log data
 *.csv
 *.log
+*.pem
 
 # caliper benchmark results
 caliper-benchmarks/*.log

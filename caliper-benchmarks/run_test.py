@@ -49,13 +49,6 @@ df = df.set_index(keys=df.Index).drop(labels='Index', axis=1).sort_index()
 
 print(df)
 
-# for _, row in df.iterrows():
-#     COMMAND = 'docker logs $(docker ps -q) > {}.log'.format(row['Hostname'])
-#     subprocess.Popen(["ssh", "-i", "~/CyberaNodes/caixiang.pem", "ubuntu@", "%s" % row['IP'], COMMAND],
-#                         shell=False,
-#                         stdout=subprocess.PIPE,
-#                         stderr=subprocess.PIPE)
-
 DEFAULT_IP = df.IP.values[0]
 SEND_RATES = [50, 100, 150, 200, 250]
 connection_url = "ws://" + DEFAULT_IP + ":8546"
@@ -68,8 +61,7 @@ with open(networkconfig, 'r') as f:
 with open(networkconfig, 'w') as f:
     json.dump(data, f, indent=4)
 
-dateTimeObj = datetime.now()
-timestampStr = dateTimeObj.strftime("%Y%m%d-%H%M%S")
+timestampStr = datetime.now().strftime("%Y%m%d-%H%M%S")
 directory = 'reports/' + timestampStr
 path = os.path.join(os.getcwd(), directory)
 os.mkdir(path)
@@ -90,3 +82,24 @@ for tps in SEND_RATES:
         subprocess.run(['sleep', '10'])
 
 print(df)
+
+subprocess.run(['sleep', '10'])
+
+for _, row in df.iterrows():
+    COMMAND = 'docker logs $(docker ps -q) > {}.log'.format(row['Hostname'])
+    subprocess.Popen(["ssh", "-i", "../data/bpet.pem", 
+                        "-o", "StrictHostKeyChecking=no", "ubuntu@%s" % row['IP'], COMMAND],
+                        shell=False,
+                        stdout=subprocess.PIPE,
+                        stderr=subprocess.PIPE)
+
+subprocess.run(['sleep', '10'])
+
+timestampStr = datetime.now().strftime("%Y%m%d-%H%M%S")
+directory = '../data/logs-' + timestampStr
+path = os.path.join(os.getcwd(), directory)
+os.mkdir(path)
+for _, row in df.iterrows():
+    subprocess.run(['scp', '-i', "../data/bpet.pem", "-o", "StrictHostKeyChecking=no", 
+    "ubuntu@{}:/home/ubuntu/{}.log".format(row['IP'], row['Hostname']), path])
+subprocess.run(['mv', 'caliper.log', path])
