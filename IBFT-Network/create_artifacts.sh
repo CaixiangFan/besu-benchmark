@@ -1,8 +1,10 @@
-export BESU_HOME=$(pwd)
-docker run --rm -d \
+#!/bin/bash
+mkdir $(pwd)/networkFiles
+
+docker run --rm \
     --name besu_config \
-    -v $BESU_HOME/networkFiles:/opt/besu/networkFiles \
-    -v $BESU_HOME/ibftConfigFile.json:/config/ibftConfigFile.json \
+    -v $(pwd)/networkFiles:/opt/besu/networkFiles \
+    -v $(pwd)/ibftConfigFile.json:/config/ibftConfigFile.json \
     hyperledger/besu:21.10 \
     operator generate-blockchain-config \
     --config-file=/config/ibftConfigFile.json \
