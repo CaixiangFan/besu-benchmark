@@ -15,12 +15,12 @@ sudo -H -u ubuntu bash -c 'python3 deploy.py 192.168.23.64 6'
 # SET UP NTP CLIENT CONNECT TO NTP SERVER
 sudo apt update -y
 sudo apt install ntpdate
-# sudo nano /etc/hosts
+sudo nano /etc/hosts
 # 10.2.1.9	bionic
 sudo ntpdate bionic
 sudo timedatectl set-ntp off
 sudo apt install ntp
-sudo vim /etc/ntp.conf
+sudo nano /etc/ntp.conf
 # server bionic prefer iburst
 sudo systemctl restart ntp
 ntpq -p
