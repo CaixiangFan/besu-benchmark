@@ -51,7 +51,7 @@ with open('Node-1/data/key.pub', 'r') as f:
     enode_id = key[2:]
 enode_host = '127.0.0.1'
 enode_port = '30303'
-enode_url = 'enode://{}@{}:{}'.format(enode_id, enode_host, enode_port)
+enode_url = ['enode://{}@{}:{}'.format(enode_id, enode_host, enode_port)]
 for i in range(NODE_COUNT):
     with open('config-template.toml', 'r') as f:
         config = toml.load(f)
