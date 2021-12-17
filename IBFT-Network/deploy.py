@@ -1,7 +1,7 @@
 import re, subprocess, os, sys, json, toml, socket, time
 
 if len(sys.argv) < 2:
-    print('Default values will be used. WATCHDOG ADDRESS is 192.168.23.64, NODE_COUNT is 5\n')
+    print('Default values will be used. NODE_COUNT is 4\n')
     NODE_COUNT = 4  # number of concu
 else:
     print('Default values have been overwritten.')
@@ -73,4 +73,5 @@ base_dir = curr_dir
 for i in range(NODE_COUNT):
     home_path = os.path.join(base_dir, 'Node-{}'.format(i+1))
     os.chdir(home_path)
-    subprocess.run(['sh', 'start.sh', 'Node-{}'.format(i+1)])
+    subprocess.run(['sh', 'start.sh', 'Node-{}'.format(i+1), 
+        DEFAULT_P2P_PORT + i, DEFAULT_RPC_HTTP_PORT + i, DEFAULT_RPC_WS_PORT + i])
