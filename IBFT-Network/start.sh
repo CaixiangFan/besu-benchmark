@@ -4,8 +4,7 @@ docker run -d --rm \
     -v ${PWD}/data:/opt/besu/data \
     -v ${PWD}/../genesis.json:/config/genesis.json \
     -v ${PWD}/config.toml:/config/config.toml \
-    -p 127.0.0.1:$2:$2 \
+    -p $2:$2 \
     -p $3:$3 \
-    -p $4:$4 \
     hyperledger/besu:21.10 \
     --config-file=/config/config.toml
