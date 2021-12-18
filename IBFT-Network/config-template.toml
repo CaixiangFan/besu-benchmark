@@ -8,7 +8,7 @@ min-gas-price=0
 
 # P2P related
 
-p2p-host="0.0.0.0"
+p2p-host="127.0.0.1"
 p2p-port=30303
 
 # RPC related
