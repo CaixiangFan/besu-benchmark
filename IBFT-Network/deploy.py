@@ -74,4 +74,4 @@ for i in range(NODE_COUNT):
     home_path = os.path.join(base_dir, 'Node-{}'.format(i+1))
     os.chdir(home_path)
     subprocess.run(['sh', 'start.sh', 'Node-{}'.format(i+1), 
-        str(DEFAULT_RPC_HTTP_PORT + i), str(DEFAULT_RPC_WS_PORT + i)])
+        str(DEFAULT_P2P_PORT + i), str(DEFAULT_RPC_HTTP_PORT + i), str(DEFAULT_RPC_WS_PORT + i)])
