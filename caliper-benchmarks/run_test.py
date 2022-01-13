@@ -5,8 +5,8 @@ import numpy as np
 import ast, redis
 
 # connect Redis databases
-# WATCHDOG_ADDRESS = "192.168.226.163"
-WATCHDOG_ADDRESS = "10.2.1.9"
+WATCHDOG_ADDRESS = "192.168.226.176"
+# WATCHDOG_ADDRESS = "10.2.1.9"
 db1 = redis.StrictRedis(
     host=WATCHDOG_ADDRESS,
     port=6379,
@@ -48,9 +48,10 @@ df['Index'] = idx
 df = df.set_index(keys=df.Index).drop(labels='Index', axis=1).sort_index()
 
 print(df)
-
+# DEFAULT_IP = '10.2.8.152'
 DEFAULT_IP = df.IP.values[0]
-SEND_RATES = [50, 100, 150, 200, 250]
+# SEND_RATES = [50, 100, 150, 200, 250]
+SEND_RATES = [40, 80, 120, 160, 200]
 connection_url = "ws://" + DEFAULT_IP + ":8546"
 if len(sys.argv) > 1:
     connection_url = "ws://" + sys.argv[1] + ":8546"
@@ -99,7 +100,9 @@ timestampStr = datetime.now().strftime("%Y%m%d-%H%M%S")
 directory = '../data/logs-' + timestampStr
 path = os.path.join(os.getcwd(), directory)
 os.mkdir(path)
+cybera_key = "../data/bpet.pem"
+ccrrg_key = "../data/rrg-bpet"
 for _, row in df.iterrows():
-    subprocess.run(['scp', '-i', "../data/bpet.pem", "-o", "StrictHostKeyChecking=no", 
+    subprocess.run(['scp', '-i', ccrrg_key, "-o", "StrictHostKeyChecking=no", 
     "ubuntu@{}:/home/ubuntu/{}.log".format(row['IP'], row['Hostname']), path])
 subprocess.run(['mv', 'caliper.log', path])
