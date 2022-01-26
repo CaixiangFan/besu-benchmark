@@ -11,16 +11,3 @@ sudo -H -u ubuntu bash -c 'pip install toml'
 sudo -H -u ubuntu bash -c 'git clone https://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@github.com/CaixiangFan/bpet.git'
 cd bpet/deploy || exit
 sudo -H -u ubuntu bash -c 'python3 deploy.py 192.168.23.64 6'
-
-# SET UP NTP CLIENT CONNECT TO NTP SERVER
-sudo apt update -y
-sudo apt install ntpdate
-sudo nano /etc/hosts
-# 10.2.1.9	bionic
-sudo ntpdate bionic
-sudo timedatectl set-ntp off
-sudo apt install ntp
-sudo nano /etc/ntp.conf
-# server bionic prefer iburst
-sudo systemctl restart ntp
-ntpq -p
