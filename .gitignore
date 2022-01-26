@@ -12,6 +12,6 @@ venv
 *.pem
 
 # caliper benchmark results
-caliper-benchmarks/*.log
+caliper-benchmarks/reports
 *.html
 data

@@ -50,8 +50,8 @@ df = df.set_index(keys=df.Index).drop(labels='Index', axis=1).sort_index()
 print(df)
 # DEFAULT_IP = '10.2.8.152'
 DEFAULT_IP = df.IP.values[0]
-# SEND_RATES = [50, 100, 150, 200, 250]
-SEND_RATES = [40, 80, 120, 160, 200]
+SEND_RATES = [50, 100, 150, 200, 250]
+# SEND_RATES = [40, 80, 120, 160, 200]
 connection_url = "ws://" + DEFAULT_IP + ":8546"
 if len(sys.argv) > 1:
     connection_url = "ws://" + sys.argv[1] + ":8546"
@@ -84,11 +84,14 @@ for tps in SEND_RATES:
 
 print(df)
 
-subprocess.run(['sleep', '10'])
+# subprocess.run(['sleep', '10'])
+
+# key = "../data/bpet.pem"
+key = "../data/rrg-bpet"
 
 for _, row in df.iterrows():
     COMMAND = 'docker logs $(docker ps -q) > {}.log'.format(row['Hostname'])
-    subprocess.Popen(["ssh", "-i", "../data/bpet.pem", 
+    subprocess.Popen(["ssh", "-i", key, 
                         "-o", "StrictHostKeyChecking=no", "ubuntu@%s" % row['IP'], COMMAND],
                         shell=False,
                         stdout=subprocess.PIPE,
@@ -98,11 +101,11 @@ subprocess.run(['sleep', '10'])
 
 timestampStr = datetime.now().strftime("%Y%m%d-%H%M%S")
 directory = '../data/logs-' + timestampStr
-path = os.path.join(os.getcwd(), directory)
-os.mkdir(path)
-cybera_key = "../data/bpet.pem"
-ccrrg_key = "../data/rrg-bpet"
+log_path = os.path.join(os.getcwd(), directory)
+os.mkdir(log_path)
+# collect besu logs
 for _, row in df.iterrows():
-    subprocess.run(['scp', '-i', ccrrg_key, "-o", "StrictHostKeyChecking=no", 
-    "ubuntu@{}:/home/ubuntu/{}.log".format(row['IP'], row['Hostname']), path])
-subprocess.run(['mv', 'caliper.log', path])
+    subprocess.run(['scp', '-i', key, "-o", "StrictHostKeyChecking=no", 
+    "ubuntu@{}:/home/ubuntu/{}.log".format(row['IP'], row['Hostname']), log_path])
+# collect caliper logs
+subprocess.run(['mv', 'caliper.log', log_path])
