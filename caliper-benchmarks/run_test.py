@@ -2,40 +2,33 @@ import yaml, subprocess, os, json, sys
 from datetime import datetime
 import pandas as pd
 import numpy as np
-import ast, redis
 
-# connect Redis databases
-WATCHDOG_ADDRESS = "192.168.226.176"
-# WATCHDOG_ADDRESS = "10.2.1.9"
-db1 = redis.StrictRedis(
-    host=WATCHDOG_ADDRESS,
-    port=6379,
-    db=1)
-db1_keys = db1.keys()
+# WATCHDOG_ADDRESS = "192.168.226.176"
+WATCHDOG_ADDRESS = "10.2.1.9"
+# keyFile = "../data/rrg-bpet"
+keyFile = "../data/bpet.pem"
+current_directory = os.getcwd()
+key = os.path.join(current_directory, keyFile)
 
-db2 = redis.StrictRedis(
-    host=WATCHDOG_ADDRESS,
-    port=6379,
-    db=2)
-db2_keys = db2.keys()
-genesis = ast.literal_eval(db2.get(b'genesis').decode('utf-8'))
+subprocess.run(['scp', '-i', key, "-o", "StrictHostKeyChecking=no", "get_results.py",
+    "ubuntu@{}:/home/ubuntu/".format(WATCHDOG_ADDRESS)])
 
-# construct dataframe
-rows = []
-for key in db1_keys:
-    row = []
-    # IP address of node
-    ip = key.decode("utf-8")
-    # check if node is validator
-    value = ast.literal_eval(db1.get(key).decode('utf-8'))
-    is_validator = value['key'][2:] in genesis['extraData']
+COMMAND = 'python3 get_results.py'
+subprocess.Popen(["ssh", "-i", key, 
+                    "-o", "StrictHostKeyChecking=no", "ubuntu@%s" % WATCHDOG_ADDRESS, COMMAND],
+                    shell=False,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE)
+subprocess.run(['sleep', '3'])
+subprocess.run(['scp', '-i', key, "-o", "StrictHostKeyChecking=no", 
+    "ubuntu@{}:/home/ubuntu/results.json".format(WATCHDOG_ADDRESS), current_directory])
 
-    row.append(value['hostname'])
-    row.append(ip)
-    row.append(value['key'])
-    row.append(is_validator)  
+subprocess.run(['sleep', '2'])
 
-    rows.append(row)
+with open('results.json', 'r') as f:
+    data = json.load(f)
+    rows = data['results']
+
 df_orig = pd.DataFrame(np.array(rows),
     columns=['Hostname', 'IP', 'NodeAddress', 'IsValidator'])
 
@@ -48,7 +41,7 @@ df['Index'] = idx
 df = df.set_index(keys=df.Index).drop(labels='Index', axis=1).sort_index()
 
 print(df)
-# DEFAULT_IP = '10.2.8.152'
+
 DEFAULT_IP = df.IP.values[0]
 SEND_RATES = [50, 100, 150, 200, 250]
 # SEND_RATES = [40, 80, 120, 160, 200]
@@ -84,10 +77,7 @@ for tps in SEND_RATES:
 
 print(df)
 
-# subprocess.run(['sleep', '10'])
-
-# key = "../data/bpet.pem"
-key = "../data/rrg-bpet"
+subprocess.run(['sleep', '10'])
 
 for _, row in df.iterrows():
     COMMAND = 'docker logs $(docker ps -q) > {}.log'.format(row['Hostname'])
