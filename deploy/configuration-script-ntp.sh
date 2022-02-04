@@ -15,14 +15,14 @@ sudo systemctl restart ntp
 sudo apt update -y
 sudo apt install ntpdate -y
 # add the NTP server’s IP address and hostname in the /etc/hosts file
-echo '192.168.226.176	  besu-watchdog' | sudo tee -a /etc/hosts
+echo '10.2.1.9	  watchdog' | sudo tee -a /etc/hosts
 # manually verify the client system is in sync with the NTP server’s time
-# sudo ntpdate besu-watchdog
+# sudo ntpdate watchdog
 sudo timedatectl set-ntp off
 # install NTP service on the client system
 sudo apt install ntp -y
 # Configure NTP Client
-echo 'server besu-watchdog prefer iburst' | sudo tee -a /etc/ntp.conf
+echo 'server watchdog prefer iburst' | sudo tee -a /etc/ntp.conf
 sudo systemctl restart ntp
 # verify sychronized successfully
 # ntpq -p
