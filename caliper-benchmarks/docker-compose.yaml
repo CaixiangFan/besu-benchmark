@@ -8,6 +8,6 @@ services:
         environment:
           - CALIPER_BIND_SUT=besu:1.4
           - CALIPER_BENCHCONFIG=benchmarks/scenario/simple/config.yaml
-          - CALIPER_NETWORKCONFIG=networks/4node-ibft2/networkconfig.json
+          - CALIPER_NETWORKCONFIG=networks/ibft2/networkconfig.json
         volumes:
           - ~/GitHub-WorkSpace/bpet/caliper-benchmarks:/hyperledger/caliper/workspace

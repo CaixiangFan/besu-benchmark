@@ -1,49 +1,49 @@
 simpleArgs: &id001
-  initialMoney: 10000
-  moneyToTransfer: 100
-  numberOfAccounts: 1000
+    initialMoney: 10000
+    moneyToTransfer: 100
+    numberOfAccounts: 1000
 test:
-  name: simple
-  description: This is an example benchmark for Caliper, to test the backend DLT's
-    performance with simple account opening & querying transactions.
-  workers:
-    type: local
-    number: 5
-  rounds:
-  - label: open
-    description: Test description for the opening of an account through the deployed
-      contract, default tps=50.
-    txNumber: 1000
-    rateControl:
-      type: fixed-rate
-      opts:
-        tps: 250
-    workload:
-      module: benchmarks/scenario/simple/open.js
-      arguments: *id001
-  - label: query
-    description: Test description for the query performance of the deployed contract,
-      default tps=100.
-    txNumber: 1000
-    rateControl:
-      type: fixed-rate
-      opts:
-        tps: 250
-    workload:
-      module: benchmarks/scenario/simple/query.js
-      arguments: *id001
-  - label: transfer
-    description: Test description for transfering money between accounts, default
-      tps=5.
-    txNumber: 1000
-    rateControl:
-      type: fixed-rate
-      opts:
-        tps: 250
-    workload:
-      module: benchmarks/scenario/simple/transfer.js
-      arguments:
-        initialMoney: 10000
-        moneyToTransfer: 100
-        numberOfAccounts: 1000
-        money: 100
+    name: simple
+    description: This is an example benchmark for Caliper, to test the backend DLT's
+        performance with simple account opening & querying transactions.
+    workers:
+        type: local
+        number: 5
+    rounds:
+    -   label: open
+        description: Test description for the opening of an account through the deployed
+            contract, default tps=50.
+        txNumber: 1000
+        rateControl:
+            type: fixed-rate
+            opts:
+                tps: 50
+        workload:
+            module: benchmarks/scenario/simple/open.js
+            arguments: *id001
+    -   label: query
+        description: Test description for the query performance of the deployed contract,
+            default tps=100.
+        txNumber: 1000
+        rateControl:
+            type: fixed-rate
+            opts:
+                tps: 50
+        workload:
+            module: benchmarks/scenario/simple/query.js
+            arguments: *id001
+    -   label: transfer
+        description: Test description for transfering money between accounts, default
+            tps=5.
+        txNumber: 1000
+        rateControl:
+            type: fixed-rate
+            opts:
+                tps: 50
+        workload:
+            module: benchmarks/scenario/simple/transfer.js
+            arguments:
+                initialMoney: 10000
+                moneyToTransfer: 100
+                numberOfAccounts: 1000
+                money: 100
