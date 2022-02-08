@@ -14,5 +14,5 @@ venv
 # caliper benchmark credentials and results
 caliper-benchmarks/reports
 *.html
-data
+/data
 caliper-benchmarks/.env

@@ -60,13 +60,8 @@ def collect_info(WATCHDOG_ADDRESS, key):
         json.dump({'nodeinfo': rows}, f, indent=4)
     return df
 
-def run(WATCHDOG_ADDRESS, key, SEND_RATES):
-    df = collect_info(WATCHDOG_ADDRESS, key)
-
-    DEFAULT_IP = df.IP.values[0]
-    connection_url = "ws://" + DEFAULT_IP + ":8546"
-    # if len(sys.argv) > 1:
-    #     connection_url = "ws://" + sys.argv[1] + ":8546"
+def run(SEND_RATES, RPC_IP):
+    connection_url = "ws://" + RPC_IP + ":8546"
     networkconfig = 'networks/ibft2/networkconfig.json'
     benchconfig = 'benchmarks/scenario/simple/config.yaml'
 
@@ -97,23 +92,19 @@ def run(WATCHDOG_ADDRESS, key, SEND_RATES):
             subprocess.run(['mv', 'report.html', '{}/report-{}-{}.html'.format(directory, tps, i+1)])
             subprocess.run(['sleep', '10'])
 
-    print(df)
-
     subprocess.run(['sleep', '10'])
 
+def collect_log(df, key):
     for _, row in df.iterrows():
         COMMAND = 'docker logs $(docker ps -q) > {}.log'.format(row['NodeName'])
         subprocess.Popen(["ssh", "-i", key, 
-                            "-o", "StrictHostKeyChecking=no", "ubuntu@%s" % row['IP'], COMMAND],
-                            shell=False,
-                            stdout=subprocess.PIPE,
-                            stderr=subprocess.PIPE)
+                        "-o", "StrictHostKeyChecking=no", "ubuntu@%s" % row['IP'], COMMAND],
+                        shell=False,
+                        stdout=subprocess.PIPE,
+                        stderr=subprocess.PIPE)
 
     subprocess.run(['sleep', '10'])
-
-    collect_log(df, key)
-
-def collect_log(df, key):
+    
     timestampStr = datetime.now().strftime("%Y%m%d-%H%M%S")
     directory = '../data/logs-' + timestampStr
     log_path = os.path.join(os.getcwd(), directory)
@@ -136,4 +127,14 @@ if __name__ == "__main__":
     current_directory = os.getcwd()
     sshKey = os.path.join(current_directory, keyFile)
     sendRates = [50, 100, 150, 200, 250]
-    run(watchdogAddress, sshKey, sendRates)
+    # collect network info
+    df = collect_info(watchdogAddress, sshKey)
+    print(df)
+    # run test
+    rpcIP = df.IP.values[0]
+    if len(sys.argv) > 1:
+        rpcIP = sys.argv[1]
+    run(SEND_RATES=sendRates, RPC_IP=rpcIP)
+    # collect logs
+    print('Starting to collect logs on each node:')
+    collect_log(df, sshKey)

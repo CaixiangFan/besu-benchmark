@@ -123,7 +123,7 @@ try:
         genesis = json.loads(redis_enode.get('genesis'))
         # Dump genesis.json
         with open('genesis.json', 'w') as f:
-            json.dump(genesis, f)
+            json.dump(genesis, f, indent=4)
         # Retrieve a key
         key = json.loads(redis_enode.lpop('key_bucket'))
         with open(f"data/key.pub", "w") as f:
