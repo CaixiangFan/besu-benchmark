@@ -47,3 +47,14 @@ test:
                 moneyToTransfer: 100
                 numberOfAccounts: 1000
                 money: 100
+monitors:
+    resource:
+    -   module: docker
+        options:
+            interval: 5
+            containers:
+            - http://10.2.12.215:2375/besu-1
+            - http://10.2.7.244:2375/besu-2
+            - http://10.2.8.94:2375/besu-3
+            - http://10.2.12.202:2375/besu-4
+            - http://10.2.8.91:2375/besu-5

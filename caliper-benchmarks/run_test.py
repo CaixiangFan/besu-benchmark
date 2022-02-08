@@ -60,6 +60,16 @@ def collect_info(WATCHDOG_ADDRESS, key):
         json.dump({'nodeinfo': rows}, f, indent=4)
     return df
 
+def setup_monitors(df):
+    benchconfig = 'benchmarks/scenario/simple/config.yaml'
+    with open(benchconfig,'r') as f:
+        y=yaml.safe_load(f)
+        for index, row in df.iterrows():
+            container = 'http://' + row.IP +':2375/' + row.NodeName
+            y['monitors']['resource'][0]['options']['containers'][index - 1] = container
+    # with open(networkconfig, 'w') as f:
+    #     json.dump(data, f, indent=4)
+
 def run(SEND_RATES, RPC_IP):
     connection_url = "ws://" + RPC_IP + ":8546"
     networkconfig = 'networks/ibft2/networkconfig.json'
@@ -91,8 +101,6 @@ def run(SEND_RATES, RPC_IP):
             subprocess.run(['docker-compose', 'up'])
             subprocess.run(['mv', 'report.html', '{}/report-{}-{}.html'.format(directory, tps, i+1)])
             subprocess.run(['sleep', '10'])
-
-    subprocess.run(['sleep', '10'])
 
 def collect_log(df, key):
     for _, row in df.iterrows():
