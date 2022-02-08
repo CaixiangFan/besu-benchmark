@@ -4,6 +4,11 @@ systemd-machine-id-setup
 systemd-resolve --flush-caches
 cd /home/ubuntu || exit
 
+# enable docker remote API 
+sudo sed -i '/ExecStart/s/$/ -H=tcp:\/\/0.0.0.0:2375/' /lib/systemd/system/docker.service
+sudo systemctl daemon-reload
+sudo service docker restart
+
 sudo apt update -y
 sudo apt install ntpdate -y
 # add the NTP server’s IP address and hostname in the /etc/hosts file
