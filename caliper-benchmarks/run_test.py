@@ -20,6 +20,17 @@ def create_connection(auth_url, region, project_name, username, password,
         app_version='1.0',
     )
     
+def setup_monitors(df):
+    benchconfig = 'benchmarks/scenario/simple/config.yaml'
+    with open(benchconfig,'r') as f:
+        y=yaml.safe_load(f)
+        y['monitors']['resource'][0]['options']['containers'] = []
+        for _, row in df.iterrows():
+            container = 'http://' + row.IP +':2375/' + row.NodeName
+            y['monitors']['resource'][0]['options']['containers'].append(container)
+    with open(benchconfig, 'w') as f:
+        yaml.dump(y, f, default_flow_style=False, sort_keys=False, indent=4)
+
 def collect_info(WATCHDOG_ADDRESS, key):
     conn = create_connection(auth_url=env['OS_AUTH_URL'], region=env['OS_REGION_NAME'],
         project_name=env['OS_PROJECT_NAME'], username=env['OS_USERNAME'],
@@ -55,7 +66,7 @@ def collect_info(WATCHDOG_ADDRESS, key):
     # sort dataframe
     df['Index'] = [int(name.split('-')[1]) for name in df.NodeName]
     df = df.set_index(keys=df.Index).drop(labels='Index', axis=1).sort_index()
-    
+    print(df)
     with open('nodeinfo.json', 'w') as f:
         json.dump({'nodeinfo': rows}, f, indent=4)
     return df
@@ -64,11 +75,12 @@ def setup_monitors(df):
     benchconfig = 'benchmarks/scenario/simple/config.yaml'
     with open(benchconfig,'r') as f:
         y=yaml.safe_load(f)
-        for index, row in df.iterrows():
+        y['monitors']['resource'][0]['options']['containers'] = []
+        for _, row in df.iterrows():
             container = 'http://' + row.IP +':2375/' + row.NodeName
-            y['monitors']['resource'][0]['options']['containers'][index - 1] = container
-    # with open(networkconfig, 'w') as f:
-    #     json.dump(data, f, indent=4)
+            y['monitors']['resource'][0]['options']['containers'].append(container)
+    with open(benchconfig, 'w') as f:
+        yaml.dump(y, f, default_flow_style=False, sort_keys=False, indent=4)
 
 def run(SEND_RATES, RPC_IP):
     connection_url = "ws://" + RPC_IP + ":8546"
@@ -103,6 +115,7 @@ def run(SEND_RATES, RPC_IP):
             subprocess.run(['sleep', '10'])
 
 def collect_log(df, key):
+    print('Starting to collect logs on each node:')
     for _, row in df.iterrows():
         COMMAND = 'docker logs $(docker ps -q) > {}.log'.format(row['NodeName'])
         subprocess.Popen(["ssh", "-i", key, 
@@ -128,21 +141,22 @@ def collect_log(df, key):
     
 
 if __name__ == "__main__":
-    # watchdogAddress = "192.168.226.176"
-    watchdogAddress = "10.2.1.9"
-    # keyFile = "../data/rrg-bpet"
-    keyFile = "../data/bpet.pem"
+    watchdogAddress = "192.168.226.176"
+    # watchdogAddress = "10.2.1.9"
+    keyFile = "../data/rrg-bpet"
+    # keyFile = "../data/bpet.pem"
     current_directory = os.getcwd()
     sshKey = os.path.join(current_directory, keyFile)
-    sendRates = [50, 100, 150, 200, 250]
+    sendRates = list(np.arange(50, 550, 50))
+    
     # collect network info
     df = collect_info(watchdogAddress, sshKey)
-    print(df)
+    # set up monitors in caliper benchmark config
+    setup_monitors(df)
     # run test
     rpcIP = df.IP.values[0]
     if len(sys.argv) > 1:
         rpcIP = sys.argv[1]
     run(SEND_RATES=sendRates, RPC_IP=rpcIP)
     # collect logs
-    print('Starting to collect logs on each node:')
     collect_log(df, sshKey)
