@@ -15,4 +15,4 @@ venv
 caliper-benchmarks/reports
 *.html
 /data
-caliper-benchmarks/.env
+caliper-benchmarks/*.env
