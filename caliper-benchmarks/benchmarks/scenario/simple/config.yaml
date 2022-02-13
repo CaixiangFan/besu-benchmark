@@ -17,7 +17,7 @@ test:
         rateControl:
             type: fixed-rate
             opts:
-                tps: 150
+                tps: 500
         workload:
             module: benchmarks/scenario/simple/open.js
             arguments: *id001
@@ -28,7 +28,7 @@ test:
         rateControl:
             type: fixed-rate
             opts:
-                tps: 150
+                tps: 500
         workload:
             module: benchmarks/scenario/simple/query.js
             arguments: *id001
@@ -39,7 +39,7 @@ test:
         rateControl:
             type: fixed-rate
             opts:
-                tps: 150
+                tps: 500
         workload:
             module: benchmarks/scenario/simple/transfer.js
             arguments:
@@ -53,8 +53,12 @@ monitors:
         options:
             interval: 5
             containers:
-            - http://10.2.12.144:2375/besu-1
-            - http://10.2.12.61:2375/besu-2
-            - http://10.2.8.94:2375/besu-3
-            - http://10.2.12.197:2375/besu-4
-            - http://10.2.12.171:2375/besu-5
+            - http://192.168.226.225:2375/besu-1
+            - http://192.168.226.64:2375/besu-2
+            - http://192.168.226.197:2375/besu-3
+            - http://192.168.226.19:2375/besu-4
+            - http://192.168.226.249:2375/besu-5
+            - http://192.168.226.216:2375/besu-6
+            - http://192.168.226.39:2375/besu-7
+            - http://192.168.226.132:2375/besu-8
+            - http://192.168.226.41:2375/besu-9

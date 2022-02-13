@@ -4,10 +4,10 @@ import pandas as pd
 import numpy as np
 from dotenv import dotenv_values
 import openstack
-env = dotenv_values(".env")
+env = dotenv_values("cc.env")
 
 def create_connection(auth_url, region, project_name, username, password,
-                      user_domain, project_domain):
+                      user_domain, project_domain, project_id):
     return openstack.connect(
         auth_url=auth_url,
         project_name=project_name,
@@ -16,6 +16,7 @@ def create_connection(auth_url, region, project_name, username, password,
         region_name=region,
         user_domain_name=user_domain,
         project_domain_name=project_domain,
+        project_id=project_id,
         app_name='bpet',
         app_version='1.0',
     )
@@ -23,7 +24,8 @@ def create_connection(auth_url, region, project_name, username, password,
 def setup_monitors(df):
     benchconfig = 'benchmarks/scenario/simple/config.yaml'
     with open(benchconfig,'r') as f:
-        y=yaml.safe_load(f)
+        y = yaml.safe_load(f)
+        y['test']['workers']['number'] = 5 # setup number of works in client side
         y['monitors']['resource'][0]['options']['containers'] = []
         for _, row in df.iterrows():
             container = 'http://' + row.IP +':2375/' + row.NodeName
@@ -35,7 +37,7 @@ def collect_info(WATCHDOG_ADDRESS, key):
     conn = create_connection(auth_url=env['OS_AUTH_URL'], region=env['OS_REGION_NAME'],
         project_name=env['OS_PROJECT_NAME'], username=env['OS_USERNAME'],
         password=env['OS_PASSWORD'], user_domain=env['OS_USER_DOMAIN_NAME'],
-        project_domain=env['OS_PROJECT_DOMAIN_NAME'])
+        project_domain=env['OS_PROJECT_DOMAIN_NAME'], project_id=env['OS_PROJECT_ID'])
     
     subprocess.run(['scp', '-i', key, "-o", "StrictHostKeyChecking=no", "get_nodeinfo.py",
     "ubuntu@{}:/home/ubuntu/".format(WATCHDOG_ADDRESS)])
@@ -147,8 +149,8 @@ if __name__ == "__main__":
     # keyFile = "../data/bpet.pem"
     current_directory = os.getcwd()
     sshKey = os.path.join(current_directory, keyFile)
-    sendRates = list(np.arange(50, 550, 50))
-    
+    sendRates = [50, 100, 150, 200, 250, 300, 350, 400, 450, 500]
+
     # collect network info
     df = collect_info(watchdogAddress, sshKey)
     # set up monitors in caliper benchmark config
