@@ -4,7 +4,7 @@ systemd-machine-id-setup
 systemd-resolve --flush-caches
 cd /home/ubuntu || exit
 
-# enable docker remote API 
+# enable docker remote API by appending -H= to the ExecStart line
 sudo sed -i '/ExecStart/s/$/ -H=tcp:\/\/0.0.0.0:2375/' /lib/systemd/system/docker.service
 sudo systemctl daemon-reload
 sudo service docker restart
@@ -25,3 +25,5 @@ sudo systemctl restart ntp
 sudo -H -u ubuntu bash -c 'git clone https://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@github.com/CaixiangFan/bpet.git'
 cd bpet/deploy || exit
 sudo -H -u ubuntu bash -c 'python3 deploy.py 192.168.226.176 4'
+# start monitoring
+sh monitor/start_monitoring.sh
