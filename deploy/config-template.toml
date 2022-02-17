@@ -26,7 +26,8 @@ rpc-ws-port=8546
 rpc-ws-api=["ADMIN", "IBFT", "ETH", "NET", "TXPOOL", "WEB3"]
 
 # monitoring
-# metrics-enabled=true
-metrics-push-enabled=true
+metrics-enabled=true
+metrics-port=9545
+# metrics-push-enabled=true
 # metrics-push-port=9091
 # metrics-push-host="0.0.0.0"
