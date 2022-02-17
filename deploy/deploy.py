@@ -32,7 +32,7 @@ config['identity'] = hostname
 config['p2p-host'] = host_ip
 config['rpc-http-host'] = host_ip
 config['rpc-ws-host'] = host_ip
-config['metrics-push-host'] = host_ip
+# config['metrics-push-host'] = host_ip
 
 # config['p2p-host'] = '0.0.0.0'
 # config['rpc-http-host'] = '0.0.0.0'
