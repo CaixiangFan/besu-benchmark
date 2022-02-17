@@ -34,15 +34,6 @@ config['rpc-http-host'] = host_ip
 config['rpc-ws-host'] = host_ip
 # config['metrics-push-host'] = host_ip
 
-with open('./monitor/prometheus-template.yml') as f:
-    prometheus = yaml.safe_load(f)
-job_name = prometheus['scrape_configs'][1]['job_name']
-prometheus['scrape_configs'][1]['job_name'] = job_name + '-' + hostname
-prometheus['scrape_configs'][1]['static_configs'][0]['targets'][0] = host_ip + ':9091'
-
-with open('./monitor/prometheus.yml', 'w') as f:
-    yaml.dump(prometheus, f, indent=2)
-
 redis_miscellaneous = Redis(host=WATCHDOG_ADDRESS, port=6379, db=0)
 redis_hosts = Redis(host=WATCHDOG_ADDRESS, port=6379, db=1)
 redis_enode = Redis(host=WATCHDOG_ADDRESS, port=6379, db=2)
@@ -53,6 +44,15 @@ redis_hosts.set(host_ip, json.dumps({'hostname': hostname}))
 logs = []
 
 try:
+    with open('./monitor/prometheus-template.yml') as f:
+        prometheus = yaml.safe_load(f)
+    job_name = prometheus['scrape_configs'][1]['job_name']
+    prometheus['scrape_configs'][1]['job_name'] = job_name + '-' + hostname
+    prometheus['scrape_configs'][1]['static_configs'][0]['targets'][0] = host_ip + ':9091'
+
+    with open('./monitor/prometheus.yml', 'w') as f:
+        yaml.dump(prometheus, f, indent=2)
+
     is_master = redis_enode.setnx("master", host_ip)
     if is_master:
         # Node to provide enode URL
