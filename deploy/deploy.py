@@ -34,13 +34,13 @@ config['rpc-http-host'] = host_ip
 config['rpc-ws-host'] = host_ip
 # config['metrics-push-host'] = host_ip
 
-with open('/monitor/prometheus-template.yml') as f:
+with open('./monitor/prometheus-template.yml') as f:
     prometheus = yaml.safe_load(f)
 job_name = prometheus['scrape_configs'][1]['job_name']
 prometheus['scrape_configs'][1]['job_name'] = job_name + '-' + hostname
 prometheus['scrape_configs'][1]['static_configs'][0]['targets'][0] = host_ip + ':9091'
 
-with open('/monitor/prometheus.yml', 'w') as f:
+with open('./monitor/prometheus.yml', 'w') as f:
     yaml.dump(prometheus, f, indent=2)
 
 redis_miscellaneous = Redis(host=WATCHDOG_ADDRESS, port=6379, db=0)
