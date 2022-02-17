@@ -46,8 +46,7 @@ logs = []
 try:
     with open('./monitor/prometheus-template.yml') as f:
         prometheus = yaml.safe_load(f)
-    job_name = prometheus['scrape_configs'][1]['job_name']
-    prometheus['scrape_configs'][1]['job_name'] = job_name + '-' + hostname
+    prometheus['scrape_configs'][1]['job_name'] = 'push-gateway' + '-' + hostname
     prometheus['scrape_configs'][1]['static_configs'][0]['targets'][0] = host_ip + ':9091'
 
     with open('./monitor/prometheus.yml', 'w') as f:
