@@ -1,7 +1,7 @@
 import re
 from redis import Redis
 import subprocess
-import toml
+import toml, yaml
 import socket
 import time
 import json
@@ -34,11 +34,14 @@ config['rpc-http-host'] = host_ip
 config['rpc-ws-host'] = host_ip
 # config['metrics-push-host'] = host_ip
 
-# config['p2p-host'] = '0.0.0.0'
-# config['rpc-http-host'] = '0.0.0.0'
-# config['rpc-ws-host'] = '0.0.0.0'
-# config['metrics-push-host'] = '127.0.0.1'
-# config['metrics-push-enabled'] = False
+with open('/monitor/prometheus-template.yml') as f:
+    prometheus = yaml.safe_load(f)
+job_name = prometheus['scrape_configs'][1]['job_name']
+prometheus['scrape_configs'][1]['job_name'] = job_name + '-' + hostname
+prometheus['scrape_configs'][1]['static_configs'][0]['targets'][0] = host_ip + ':9091'
+
+with open('/monitor/prometheus.yml', 'w') as f:
+    yaml.dump(prometheus, f, indent=2)
 
 redis_miscellaneous = Redis(host=WATCHDOG_ADDRESS, port=6379, db=0)
 redis_hosts = Redis(host=WATCHDOG_ADDRESS, port=6379, db=1)
