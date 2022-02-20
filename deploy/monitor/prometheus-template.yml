@@ -6,10 +6,31 @@ scrape_configs:
     static_configs:
     - targets: 
       - localhost:9090
-  - job_name: push-gateway
+  - job_name: push-gateway-besu-1
     metrics_path: /metrics
     honor_labels: true
     scheme: http
     static_configs:
     - targets:
-      - 192.168.226.75:9091
+      - 192.168.226.26:9091
+  - job_name: push-gateway-besu-2
+    metrics_path: /metrics
+    honor_labels: true
+    scheme: http
+    static_configs:
+    - targets:
+      - 192.168.226.167:9091
+  - job_name: push-gateway-besu-3
+    metrics_path: /metrics
+    honor_labels: true
+    scheme: http
+    static_configs:
+    - targets:
+      - 192.168.226.74:9091
+  - job_name: push-gateway-besu-4
+    metrics_path: /metrics
+    honor_labels: true
+    scheme: http
+    static_configs:
+    - targets:
+      - 192.168.226.87:9091
