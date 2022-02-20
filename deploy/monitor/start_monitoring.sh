@@ -1,7 +1,7 @@
 docker run --rm -d \
-    --name pushgateway \
-    -p 9091:9091 \
-    prom/pushgateway
+    --name grafana \
+    -p 3000:3000 \
+    grafana/grafana
 
 sleep 5
 

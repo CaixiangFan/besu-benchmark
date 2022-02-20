@@ -1,7 +1,7 @@
 import re
 from redis import Redis
 import subprocess
-import toml, yaml
+import toml
 import socket
 import time
 import json
@@ -44,14 +44,6 @@ redis_hosts.set(host_ip, json.dumps({'hostname': hostname}))
 logs = []
 
 try:
-    with open('./monitor/prometheus-template.yml') as f:
-        prometheus = yaml.safe_load(f)
-    prometheus['scrape_configs'][1]['job_name'] = 'push-gateway' + '-' + hostname
-    prometheus['scrape_configs'][1]['static_configs'][0]['targets'][0] = host_ip + ':9091'
-
-    with open('./monitor/prometheus.yml', 'w') as f:
-        yaml.dump(prometheus, f, indent=2)
-
     is_master = redis_enode.setnx("master", host_ip)
     if is_master:
         # Node to provide enode URL

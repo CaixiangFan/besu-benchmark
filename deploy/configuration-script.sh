@@ -25,7 +25,3 @@ sudo systemctl restart ntp
 sudo -H -u ubuntu bash -c 'git clone https://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@github.com/CaixiangFan/bpet.git'
 cd bpet/deploy || exit
 sudo -H -u ubuntu bash -c 'python3 deploy.py 192.168.226.176 4'
-# start monitoring
-sleep 10
-cd monitor || exit
-sh start_monitoring.sh
