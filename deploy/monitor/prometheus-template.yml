@@ -2,35 +2,35 @@ global:
   scrape_interval: 15s
 
 scrape_configs:
-  - job_name: prometheus
-    static_configs:
-    - targets: 
-      - localhost:9090
+  # - job_name: prometheus
+  #   static_configs:
+  #   - targets: 
+  #     - localhost:9090
   - job_name: push-gateway-besu-1
     metrics_path: /metrics
     honor_labels: true
     scheme: http
     static_configs:
     - targets:
-      - 192.168.226.193:9091
+      - 192.168.226.62:9091
   - job_name: push-gateway-besu-2
     metrics_path: /metrics
     honor_labels: true
     scheme: http
     static_configs:
     - targets:
-      - 192.168.226.178:9091
+      - 192.168.226.28:9091
   - job_name: push-gateway-besu-3
     metrics_path: /metrics
     honor_labels: true
     scheme: http
     static_configs:
     - targets:
-      - 192.168.226.49:9091
+      - 192.168.226.213:9091
   - job_name: push-gateway-besu-4
     metrics_path: /metrics
     honor_labels: true
     scheme: http
     static_configs:
     - targets:
-      - 192.168.226.146:9091
+      - 192.168.226.97:9091
