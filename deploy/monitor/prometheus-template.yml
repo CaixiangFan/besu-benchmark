@@ -12,25 +12,25 @@ scrape_configs:
     scheme: http
     static_configs:
     - targets:
-      - 192.168.226.62:9091
+      - 192.168.226.241:9091
   - job_name: push-gateway-besu-2
     metrics_path: /metrics
     honor_labels: true
     scheme: http
     static_configs:
     - targets:
-      - 192.168.226.28:9091
+      - 192.168.226.193:9091
   - job_name: push-gateway-besu-3
     metrics_path: /metrics
     honor_labels: true
     scheme: http
     static_configs:
     - targets:
-      - 192.168.226.213:9091
+      - 192.168.226.155:9091
   - job_name: push-gateway-besu-4
     metrics_path: /metrics
     honor_labels: true
     scheme: http
     static_configs:
     - targets:
-      - 192.168.226.97:9091
+      - 192.168.226.107:9091
