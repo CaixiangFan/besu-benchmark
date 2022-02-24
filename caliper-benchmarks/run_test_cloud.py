@@ -110,10 +110,10 @@ def run(SEND_RATES, RPC_IP):
             subprocess.run(['mv', 'report.html', '{}/report-{}-{}.html'.format(directory, tps, i+1)])
             subprocess.run(['sleep', '10'])
 
-def collect_log(df, key):
+def collect_log(df, key, since):
     print('Starting to collect logs on each node:')
     for _, row in df.iterrows():
-        COMMAND = 'docker logs {} > {}.log'.format(row['NodeName'], row['NodeName'])
+        COMMAND = 'docker logs --since {} {} > {}.log'.format(since, row['NodeName'], row['NodeName'])
         subprocess.Popen(["ssh", "-i", key, 
                         "-o", "StrictHostKeyChecking=no", "ubuntu@%s" % row['IP'], COMMAND],
                         shell=False,
@@ -133,8 +133,8 @@ def collect_log(df, key):
     # collect caliper logs
     subprocess.run(['mv', 'caliper.log', log_path])
     # collect node info json data
-    subprocess.run(['mv', 'nodeinfo.json', log_path])
-    
+    subprocess.run(['cp', 'nodeinfo.json', log_path])
+
 
 if __name__ == "__main__":
     watchdogAddress = "192.168.226.176"
@@ -152,6 +152,7 @@ if __name__ == "__main__":
     rpcIP = df.IP.values[0]
     if len(sys.argv) > 1:
         rpcIP = sys.argv[1]
+    startTime = datetime.now().isoformat('T') + 'Z'
     run(SEND_RATES=sendRates, RPC_IP=rpcIP)
     # collect logs
-    collect_log(df, sshKey)
+    collect_log(df, sshKey, startTime)
