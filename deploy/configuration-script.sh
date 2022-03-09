@@ -22,6 +22,6 @@ sudo apt install ntp -y
 echo 'server watchdog prefer iburst' | sudo tee -a /etc/ntp.conf
 sudo systemctl restart ntp
 
-sudo -H -u ubuntu bash -c 'git clone https://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@github.com/CaixiangFan/bpet.git'
+sudo -H -u ubuntu bash -c 'git clone https://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@github.com/CaixiangFan/bpet.git'
 cd bpet/deploy || exit
 sudo -H -u ubuntu bash -c 'python3 deploy.py 192.168.226.176 4'
