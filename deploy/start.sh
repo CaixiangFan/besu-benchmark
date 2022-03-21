@@ -1,5 +1,6 @@
 #!/bin/bash
 export HOSTNAME=$(hostname)
+export BESU_OPTS='-Xmx16g -Xms8g'
 docker run -d --rm \
     --name $HOSTNAME \
     --net host \
