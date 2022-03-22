@@ -1,6 +1,6 @@
 #!/bin/bash
 export HOSTNAME=$(hostname)
-export BESU_OPTS='-Xmx16g -Xms8g'
+export BESU_OPTS='-XX:MaxRAMPercentage=80.0'
 docker run -d --rm \
     --name $HOSTNAME \
     --net host \
