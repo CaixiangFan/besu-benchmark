@@ -6,6 +6,12 @@ from dotenv import dotenv_values
 import openstack
 env = dotenv_values("cc.env")
 
+# install docker-compose:
+# sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+# sudo chmod +x /usr/local/bin/docker-compose
+# python3 -m pip install PyYAML pandas python-dotenv openstacksdk
+# copy cc.env and ssh-key to client
+# run test
 def create_connection(auth_url, region, project_name, username, password,
                       user_domain, project_domain, project_id):
     return openstack.connect(
@@ -20,7 +26,7 @@ def create_connection(auth_url, region, project_name, username, password,
         app_name='bpet',
         app_version='1.0',
     )
-    
+
 def collect_info(WATCHDOG_ADDRESS, key):
     conn = create_connection(auth_url=env['OS_AUTH_URL'], region=env['OS_REGION_NAME'],
         project_name=env['OS_PROJECT_NAME'], username=env['OS_USERNAME'],
@@ -74,8 +80,8 @@ def setup_monitors(df):
 
 def run(SEND_RATES, RPC_IP):
     connection_url = "ws://" + RPC_IP + ":8546"
-    networkconfig = 'networks/ibft2/networkconfig.json'
-    benchconfig = 'benchmarks/scenario/simple/config.yaml'
+    networkconfig = './networks/ibft2/networkconfig.json'
+    benchconfig = './benchmarks/scenario/simple/config.yaml'
 
     with open(networkconfig, 'r') as f:
         data = json.load(f)
@@ -104,10 +110,10 @@ def run(SEND_RATES, RPC_IP):
             subprocess.run(['mv', 'report.html', '{}/report-{}-{}.html'.format(directory, tps, i+1)])
             subprocess.run(['sleep', '10'])
 
-def collect_log(df, key):
+def collect_log(df, key, since):
     print('Starting to collect logs on each node:')
     for _, row in df.iterrows():
-        COMMAND = 'docker logs {} > {}.log'.format(row['NodeName'], row['NodeName'])
+        COMMAND = 'docker logs --since {} {} > {}.log'.format(since, row['NodeName'], row['NodeName'])
         subprocess.Popen(["ssh", "-i", key, 
                         "-o", "StrictHostKeyChecking=no", "ubuntu@%s" % row['IP'], COMMAND],
                         shell=False,
@@ -127,8 +133,8 @@ def collect_log(df, key):
     # collect caliper logs
     subprocess.run(['mv', 'caliper.log', log_path])
     # collect node info json data
-    subprocess.run(['mv', 'nodeinfo.json', log_path])
-    
+    subprocess.run(['cp', 'nodeinfo.json', log_path])
+
 
 if __name__ == "__main__":
     watchdogAddress = "192.168.226.176"
@@ -137,7 +143,7 @@ if __name__ == "__main__":
     # keyFile = "../data/bpet.pem"
     current_directory = os.getcwd()
     sshKey = os.path.join(current_directory, keyFile)
-    sendRates = [50, 100, 150, 200, 250, 300, 350, 400, 450, 500]
+    sendRates = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000]
     # collect network info
     df = collect_info(watchdogAddress, sshKey)
     # set up monitors in caliper benchmark config
@@ -146,6 +152,7 @@ if __name__ == "__main__":
     rpcIP = df.IP.values[0]
     if len(sys.argv) > 1:
         rpcIP = sys.argv[1]
+    startTime = datetime.now().isoformat('T') + 'Z'
     run(SEND_RATES=sendRates, RPC_IP=rpcIP)
     # collect logs
-    collect_log(df, sshKey)
+    collect_log(df, sshKey, startTime)
