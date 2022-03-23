@@ -10,7 +10,8 @@ env = dotenv_values("cc.env")
 # sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 # sudo chmod +x /usr/local/bin/docker-compose
 # python3 -m pip install PyYAML pandas python-dotenv openstacksdk
-# copy cc.env and ssh-key to client
+# cd bpet; mkdir data; cd caliper-benchmarks; mkdir reports 
+# scp cc.env to bpet/caliper-benchmarks; scp ssh-key to bpet/data: 
 # run test
 def create_connection(auth_url, region, project_name, username, password,
                       user_domain, project_domain, project_id):
