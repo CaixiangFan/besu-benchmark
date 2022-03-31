@@ -20,8 +20,8 @@
 
 const HDWalletProvider = require('@truffle/hdwallet-provider');
 const fs = require('fs');
-const privateKey = fs.readFileSync("./IBFT-Network/Node-1/data/key").toString().trim();
-const jsonRpcEndpoint = 'http://10.2.10.182:8545'
+const privateKey = fs.readFileSync("./data/privatekey").toString().trim();
+const jsonRpcEndpoint = 'http://192.168.226.18:8545'
 const privateKeyProvider = new HDWalletProvider(privateKey, jsonRpcEndpoint)
 
 console.log(privateKeyProvider)
