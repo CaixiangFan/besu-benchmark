@@ -1,8 +1,8 @@
 upstream besunodes {
-    server 192.168.226.172:8546;
-    server 192.168.226.46:8546;
-    server 192.168.226.140:8546;
-    server 192.168.226.55:8546;
+    server 192.168.226.81:8546;
+    server 192.168.226.34:8546;
+    server 192.168.226.45:8546;
+    server 192.168.226.230:8546;
 }
 
 log_format upstreamlog '[$time_local] $remote_addr - $remote_user - $server_name $host to: $upstream_addr: $request $status upstream_response_time $upstream_response_time msec $msec request_time $request_time';
