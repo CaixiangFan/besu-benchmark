@@ -1,4 +1,6 @@
 #!/bin/bash
+docker stop $(docker ps -q)
+sleep 5
 export HOSTNAME=$(hostname)
 docker run -d --rm \
     --name $HOSTNAME \
