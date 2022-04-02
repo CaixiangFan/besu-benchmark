@@ -23,16 +23,14 @@ def create_connection(auth_url, region, project_name, username, password,
         region_name=region,
         user_domain_name=user_domain,
         project_domain_name=project_domain,
-        project_id=project_id,
-        app_name='bpet',
-        app_version='1.0',
+        project_id=project_id
     )
-
+    
 def collect_info(WATCHDOG_ADDRESS, key):
     conn = create_connection(auth_url=env['OS_AUTH_URL'], region=env['OS_REGION_NAME'],
-        project_name=env['OS_PROJECT_NAME'], username=env['OS_USERNAME'],
-        password=env['OS_PASSWORD'], user_domain=env['OS_USER_DOMAIN_NAME'],
-        project_domain=env['OS_PROJECT_DOMAIN_NAME'], project_id=env['OS_PROJECT_ID'])
+    project_name=env['OS_PROJECT_NAME'], username=env['OS_USERNAME'],
+    password=env['OS_PASSWORD'], user_domain=env['OS_USER_DOMAIN_NAME'],
+    project_domain=env['OS_PROJECT_DOMAIN_NAME'], project_id=env['OS_PROJECT_ID'])
     
     subprocess.run(['scp', '-i', key, "-o", "StrictHostKeyChecking=no", "get_nodeinfo.py",
     "ubuntu@{}:/home/ubuntu/".format(WATCHDOG_ADDRESS)])
@@ -139,9 +137,8 @@ def collect_log(df, key, since):
 
 if __name__ == "__main__":
     # watchdogAddress = "192.168.226.176"
-    watchdogAddress = "10.2.1.9"
-    # keyFile = "../data/rrg-bpet"
-    keyFile = "../data/bpet.pem"
+    watchdogAddress = "10.2.12.61"
+    keyFile = "../data/rrg-bpet"
     current_directory = os.getcwd()
     sshKey = os.path.join(current_directory, keyFile)
     sendRates = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000]
