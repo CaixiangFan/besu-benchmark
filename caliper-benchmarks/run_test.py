@@ -145,7 +145,7 @@ if __name__ == "__main__":
     current_directory = os.getcwd()
     sshKey = os.path.join(current_directory, keyFile)
     sendRates = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000]
-    sendRates = [1000]
+    # sendRates = [1000]
     # collect network info
     df = collect_info(watchdogAddress, sshKey)
     # set up monitors in caliper benchmark config
