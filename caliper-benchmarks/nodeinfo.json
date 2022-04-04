@@ -1,36 +1,36 @@
 {
     "nodeinfo": [
         [
-            "besu-2",
-            "192.168.226.45",
-            "0xc452f1e28ad17058b9807c32eadeddc17b1a58fb",
-            true,
-            "1a4c3465-de34-4e50-8ea5-c6a97b46ff56",
-            "a9fec66940abd068164a9621bc0d7629736a1922d17232e59db6ea34"
-        ],
-        [
             "besu-4",
-            "192.168.226.106",
-            "0xf968cfd1ef9bc4c953b021bea6d1a2a9abe2641b",
+            "10.2.13.45",
+            "0xde0ec9699a7d399c6d4d8b8d83d2c4f4a2f9efcd",
             true,
-            "4169a11f-1fc4-42dc-bacb-ca0a8548f5e4",
-            "5299f348e3ad888642d0ce8d9830590862432c80be36f2422980139c"
+            "6759a953-ac27-40f2-9c39-79c1078ddae3",
+            "cb73870ddbc9988c521cf95dc8522e821a4e3a9bf27da59648a024e0"
         ],
         [
-            "besu-1",
-            "192.168.226.217",
-            "0x2e70eb3df64feb52fdd7fec9f42f17dde5a9241b",
+            "besu-2",
+            "10.2.13.57",
+            "0xfff7774107f7c66c45321dd9b86ad09f21473c95",
             true,
-            "87ec75ad-11c6-4e3e-ac11-4fc1bfe28f09",
-            "5ab1db1ff1447f2e939f57b885919975e89c62fcd163e9da5aceb571"
+            "242f070e-879c-4f66-9d0f-e6338e751c84",
+            "12e678d36d6dc54feee7fb00fe48678bab6fd26a76a20db6cb95d7bb"
         ],
         [
             "besu-3",
-            "192.168.226.18",
-            "0x9508280323c73b62e133fe3809b663759aaee039",
+            "10.2.9.234",
+            "0x709f53e59f541cc76c678dccba272817f450a0f9",
             true,
-            "6f73ab76-03f2-402d-a38c-5e09ef970092",
-            "9ec27aa112c25f271ed6a13a129f1b03e214ee6b0a00c3f73ee05278"
+            "b707c807-e0f1-4cdd-8ad1-10b4567f95e7",
+            "5bc3c72bf1b42515cb454e42d4bc94b7b7acd3f12519d0cd0ac8ea70"
+        ],
+        [
+            "besu-1",
+            "10.2.1.9",
+            "0x781345fa5477b9a0d085ee5734ffa965bc3da068",
+            true,
+            "40d368a4-75e5-4cd0-b06f-372561d0e89f",
+            "85ae958da561f450ef37abc13d5632a395bcb165544e8bc49c37bb13"
         ]
     ]
 }
