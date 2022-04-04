@@ -1,4 +1,4 @@
-# logging="DEBUG"
+logging="DEBUG"
 identity="node1"
 data-path="/opt/besu/data"
 genesis-file="/config/genesis.json"

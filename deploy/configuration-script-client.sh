@@ -25,5 +25,5 @@ sudo -H -u ubuntu bash -c 'git clone https://ghp_kd2es62rd0hmijv5Rg4MzlkBPVmMOh4
 sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
 python3 -m pip install PyYAML pandas python-dotenv openstacksdk
-cd bpet & mkdir data
-cd caliper-benchmarks & mkdir reports
+cd bpet && mkdir data
+cd caliper-benchmarks && mkdir reports
