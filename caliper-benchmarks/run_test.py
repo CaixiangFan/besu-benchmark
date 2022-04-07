@@ -4,6 +4,8 @@ import pandas as pd
 import numpy as np
 from dotenv import dotenv_values
 import openstack
+import time
+
 env = dotenv_values("cc.env")
 
 # install docker-compose:
@@ -145,7 +147,7 @@ if __name__ == "__main__":
     current_directory = os.getcwd()
     sshKey = os.path.join(current_directory, keyFile)
     sendRates = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000]
-    sendRates = [1000]
+    # sendRates = [1000]
     # collect network info
     df = collect_info(watchdogAddress, sshKey)
     # set up monitors in caliper benchmark config
@@ -154,6 +156,12 @@ if __name__ == "__main__":
     rpcIP = df.IP.values[0]
     if len(sys.argv) > 1:
         rpcIP = sys.argv[1]
+    # restart besu containers
+    for ip in df.IP.values:
+        os.system(f"""ssh -o "StrictHostKeyChecking no" -i ../data/rrg-bpet ubuntu@{ip} "docker ps -aq | xargs docker restart" """)
+    # sleep for 5 min to wait for synchronization
+    time.sleep(300)
+    # run test
     startTime = datetime.now().isoformat('T') + 'Z'
     run(SEND_RATES=sendRates, RPC_IP=rpcIP)
     # collect logs
