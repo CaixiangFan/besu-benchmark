@@ -24,4 +24,4 @@ sudo systemctl restart ntp
 
 sudo -H -u ubuntu bash -c 'git clone https://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@github.com/CaixiangFan/bpet.git'
 cd bpet/deploy || exit
-sudo -H -u ubuntu bash -c 'python3 deploy.py 192.168.226.176 4'
+sudo -H -u ubuntu bash -c 'python3 deploy.py 192.168.226.176 8'
