@@ -157,10 +157,10 @@ if __name__ == "__main__":
     if len(sys.argv) > 1:
         rpcIP = sys.argv[1]
     # restart besu containers
-    for ip in df.IP.values:
-        os.system(f"""ssh -o "StrictHostKeyChecking no" -i ../data/rrg-bpet ubuntu@{ip} "docker ps -aq | xargs docker restart" """)
+    # for ip in df.IP.values:
+    #     os.system(f"""ssh -o "StrictHostKeyChecking no" -i ../data/rrg-bpet ubuntu@{ip} "docker ps -aq | xargs docker restart" """)
     # sleep for 5 min to wait for synchronization
-    time.sleep(300)
+    # time.sleep(300)
     # run test
     startTime = datetime.now().isoformat('T') + 'Z'
     run(SEND_RATES=sendRates, RPC_IP=rpcIP)
