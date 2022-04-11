@@ -1,0 +1,81 @@
+import re, base64, sys
+import openstack
+from redis import Redis
+from dotenv import dotenv_values
+env = dotenv_values("../caliper-benchmarks/cc.env")
+
+def create_connection():
+    return openstack.connect(
+        auth_url=env['OS_AUTH_URL'],
+        project_name=env['OS_PROJECT_NAME'],
+        username=env['OS_USERNAME'],
+        password=env['OS_PASSWORD'],
+        region_name=env['OS_REGION_NAME'],
+        user_domain_name=env['OS_USER_DOMAIN_NAME'],
+        project_domain_name=env['OS_PROJECT_DOMAIN_NAME'],
+        project_id=env['OS_PROJECT_ID'],
+        app_name='bpet',
+        app_version='1.0',
+    )
+
+def create_instance(conn, instance_name, flavor_name):
+    with open('configuration-script.sh') as f:
+        post_creation_command = f.read()
+    userdata = base64.b64encode(post_creation_command.encode("utf-8")).decode('utf-8')
+    print("Creating instance ", instance_name)
+    flavor = conn.compute.find_flavor(flavor_name)
+    image = conn.compute.find_image("besu-base")
+    network = conn.network.find_network("rrg-khazaei-network")
+    security_group = conn.network.find_security_group("open")
+    key = conn.compute.find_keypair("bpet")
+    instance = conn.compute.create_server(name=instance_name, 
+                                    flavor_id=flavor.id, 
+                                    image_id=image.id, 
+                                    networks=[{"uuid": network.id}], 
+                                    security_groups=[{'name': security_group.name}], 
+                                    key_name=key.name,
+                                    user_data=userdata)
+    instance = conn.compute.wait_for_server(instance)
+    return(instance)
+
+
+def flush_redis(watchdog_addr):
+        hosts = Redis(host=watchdog_addr, port=6379, db=1)
+        hosts.flushdb()
+        enode = Redis(host=watchdog_addr, port=6379, db=2)
+        enode.flushdb()
+        logs = Redis(host=watchdog_addr, port=6379, db=3)
+        logs.flushdb()
+
+def deploy(network_size, flavor_name, watchdog_address):
+    instances = {}
+    conn = create_connection()
+    for server in conn.compute.servers():
+        if(re.match(r'besu-\d+', server.name)):
+            print("Please delete all current besu nodes, then deploy a new network!")
+            return
+    print("Flushing redis dbs...")
+    flush_redis(watchdog_address)
+    for id in range(network_size):
+        instance_name = 'besu-'+str(id+1)
+        instance = create_instance(conn=conn, instance_name=instance_name, flavor_name=flavor_name)
+        instances[instance.name] = instance.addresses
+    return instances
+
+
+if __name__ == "__main__":
+    # network_size options: 4,6,8,10,12,14,16
+    network_size = 8
+    # flavor options: c2-7.5gb-36, c4-15gb-144, c8-30gb-288, c16-60gb-576
+    flavor_name = "c2-7.5gb-36"
+    watchdog_address="192.168.226.176"
+
+    if len(sys.argv) < 2:
+        print('Baseline confiuggurations will be used: N={}, flavor={}'.format(network_size, flavor_name))
+    else:
+        network_size = int(sys.argv[1])
+        if len(sys.argv) > 2:
+            flavor_name = sys.argv[2]
+        print('Default values have been overwritten: N={}, flavor={}'.format(network_size, flavor_name))
+
+    deploy(network_size, flavor_name, watchdog_address)
