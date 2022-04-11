@@ -1,36 +1,36 @@
 {
     "nodeinfo": [
         [
-            "besu-2",
-            "192.168.226.45",
-            "0xc452f1e28ad17058b9807c32eadeddc17b1a58fb",
+            "besu-3",
+            "192.168.226.147",
+            "0x617037d59e763c75185280b04ad21a6b7daead91",
             true,
-            "1a4c3465-de34-4e50-8ea5-c6a97b46ff56",
-            "a9fec66940abd068164a9621bc0d7629736a1922d17232e59db6ea34"
+            "285f7ac1-b7e6-42a1-9f67-90d5d4d407a5",
+            "9ec27aa112c25f271ed6a13a129f1b03e214ee6b0a00c3f73ee05278"
         ],
         [
-            "besu-4",
-            "192.168.226.106",
-            "0xf968cfd1ef9bc4c953b021bea6d1a2a9abe2641b",
+            "besu-2",
+            "192.168.226.183",
+            "0xa2fdca699afbf5a1ba1868611d180d42eddd3c80",
             true,
-            "4169a11f-1fc4-42dc-bacb-ca0a8548f5e4",
-            "5299f348e3ad888642d0ce8d9830590862432c80be36f2422980139c"
+            "dbfca79e-10b5-4844-b266-ce239bf7de52",
+            "7fe404fabadc35aaea4cb68e0b5227ef83bd74d3dbaf114bb1f930b4"
         ],
         [
             "besu-1",
-            "192.168.226.217",
-            "0x2e70eb3df64feb52fdd7fec9f42f17dde5a9241b",
+            "192.168.226.128",
+            "0xaaa8451dd2e6829b3f5f7180a84e9655d1db4b66",
             true,
-            "87ec75ad-11c6-4e3e-ac11-4fc1bfe28f09",
-            "5ab1db1ff1447f2e939f57b885919975e89c62fcd163e9da5aceb571"
+            "c77a0173-1db6-4da5-ab40-882f6d19bc96",
+            "f2fd89d46662b91c8ca209924a6506e30816a185b06f96501b37d8a5"
         ],
         [
-            "besu-3",
-            "192.168.226.18",
-            "0x9508280323c73b62e133fe3809b663759aaee039",
+            "besu-4",
+            "192.168.226.239",
+            "0x8644801dfff2662570caa0d6617983b91a9e60ba",
             true,
-            "6f73ab76-03f2-402d-a38c-5e09ef970092",
-            "9ec27aa112c25f271ed6a13a129f1b03e214ee6b0a00c3f73ee05278"
+            "f8357eb7-7d1b-478b-b8ad-4b1698708f2a",
+            "eb0fd7bf31974680c7c923a7df65cfc4098ef9f6f77ea3c14e2ed672"
         ]
     ]
 }

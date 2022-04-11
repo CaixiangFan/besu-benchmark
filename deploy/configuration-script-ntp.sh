@@ -15,7 +15,7 @@ sudo systemctl restart ntp
 sudo apt update -y
 sudo apt install ntpdate -y
 # add the NTP server’s IP address and hostname in the /etc/hosts file
-echo '10.2.1.9	  watchdog' | sudo tee -a /etc/hosts
+echo '10.2.12.61	  watchdog' | sudo tee -a /etc/hosts
 # manually verify the client system is in sync with the NTP server’s time
 # sudo ntpdate watchdog
 sudo timedatectl set-ntp off
