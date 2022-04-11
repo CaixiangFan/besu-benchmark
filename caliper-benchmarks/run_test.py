@@ -1,4 +1,4 @@
-import yaml, subprocess, os, json, sys
+import yaml, subprocess, os, json, sys, re
 from datetime import datetime
 import pandas as pd
 import numpy as np
@@ -15,53 +15,39 @@ env = dotenv_values("cc.env")
 # cd bpet; mkdir data; cd caliper-benchmarks; mkdir reports 
 # scp cc.env to bpet/caliper-benchmarks; scp bpet/data/rrg-bpet to bpet/data/: 
 # run test
-def create_connection(auth_url, region, project_name, username, password,
-                      user_domain, project_domain, project_id):
+def create_connection():
     return openstack.connect(
-        auth_url=auth_url,
-        project_name=project_name,
-        username=username,
-        password=password,
-        region_name=region,
-        user_domain_name=user_domain,
-        project_domain_name=project_domain,
-        project_id=project_id,
+        auth_url=env['OS_AUTH_URL'],
+        project_name=env['OS_PROJECT_NAME'],
+        username=env['OS_USERNAME'],
+        password=env['OS_PASSWORD'],
+        region_name=env['OS_REGION_NAME'],
+        user_domain_name=env['OS_USER_DOMAIN_NAME'],
+        project_domain_name=env['OS_PROJECT_DOMAIN_NAME'],
+        project_id=env['OS_PROJECT_ID'],
         app_name='bpet',
         app_version='1.0',
     )
 
-def collect_info(WATCHDOG_ADDRESS, key):
-    conn = create_connection(auth_url=env['OS_AUTH_URL'], region=env['OS_REGION_NAME'],
-        project_name=env['OS_PROJECT_NAME'], username=env['OS_USERNAME'],
-        password=env['OS_PASSWORD'], user_domain=env['OS_USER_DOMAIN_NAME'],
-        project_domain=env['OS_PROJECT_DOMAIN_NAME'], project_id=env['OS_PROJECT_ID'])
-    
-    subprocess.run(['scp', '-i', key, "-o", "StrictHostKeyChecking=no", "get_nodeinfo.py",
-    "ubuntu@{}:/home/ubuntu/".format(WATCHDOG_ADDRESS)])
+def collect_info():
+    conn = create_connection()
+    rows = []
+    for server in conn.compute.servers():
+        if(re.match(r'besu-\d+', server.name)):
+            row = []
+            NodeName = server.name
+            IP = server.addresses['rrg-khazaei-network'][0]['addr']
+            instance_id = conn.compute.find_server(NodeName).id
+            host_id = conn.compute.get_server(instance_id).host_id
 
-    COMMAND = 'python3 get_nodeinfo.py'
-    subprocess.Popen(["ssh", "-i", key, 
-                        "-o", "StrictHostKeyChecking=no", "ubuntu@%s" % WATCHDOG_ADDRESS, COMMAND],
-                        shell=False,
-                        stdout=subprocess.PIPE,
-                        stderr=subprocess.PIPE)
-    subprocess.run(['sleep', '3'])
-    subprocess.run(['scp', '-i', key, "-o", "StrictHostKeyChecking=no", 
-        "ubuntu@{}:/home/ubuntu/nodeinfo.json".format(WATCHDOG_ADDRESS), os.getcwd()])
+            row.append(NodeName)
+            row.append(IP)
+            row.append(instance_id)
+            row.append(host_id)
 
-    subprocess.run(['sleep', '2'])
-
-    with open('nodeinfo.json', 'r') as f:
-        data = json.load(f)
-        rows = data['nodeinfo']
-
-    for row in rows:
-        instance_id = conn.compute.find_server(row[0]).id
-        host_id = conn.compute.get_server(instance_id).host_id
-        row.append(instance_id)
-        row.append(host_id)
+            rows.append(row)
     df = pd.DataFrame(np.array(rows),
-        columns=['NodeName', 'IP', 'NodeAddress', 'IsValidator', 'InstanceID', 'HostID'])
+        columns=['NodeName', 'IP', 'InstanceID', 'HostID'])
     # sort dataframe
     df['Index'] = [int(name.split('-')[1]) for name in df.NodeName]
     df = df.set_index(keys=df.Index).drop(labels='Index', axis=1).sort_index()
@@ -149,7 +135,7 @@ if __name__ == "__main__":
     sendRates = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000]
     # sendRates = [1000]
     # collect network info
-    df = collect_info(watchdogAddress, sshKey)
+    df = collect_info()
     # set up monitors in caliper benchmark config
     setup_monitors(df)
     # run test
@@ -157,10 +143,10 @@ if __name__ == "__main__":
     if len(sys.argv) > 1:
         rpcIP = sys.argv[1]
     # restart besu containers
-    # for ip in df.IP.values:
-    #     os.system(f"""ssh -o "StrictHostKeyChecking no" -i ../data/rrg-bpet ubuntu@{ip} "docker ps -aq | xargs docker restart" """)
+    for ip in df.IP.values:
+        os.system(f"""ssh -o "StrictHostKeyChecking no" -i ../data/rrg-bpet ubuntu@{ip} "docker ps -aq | xargs docker restart" """)
     # sleep for 5 min to wait for synchronization
-    # time.sleep(300)
+    time.sleep(300)
     # run test
     startTime = datetime.now().isoformat('T') + 'Z'
     run(SEND_RATES=sendRates, RPC_IP=rpcIP)
