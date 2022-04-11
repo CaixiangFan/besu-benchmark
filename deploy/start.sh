@@ -8,7 +8,7 @@ docker run -d --rm \
     -v ${PWD}/data:/opt/besu/data \
     -v ${PWD}/genesis.json:/config/genesis.json \
     -v ${PWD}/config.toml:/config/config.toml \
-    hyperledger/besu:21.10 \
+    hyperledger/besu:22.4 \
     --config-file=/config/config.toml
 # -e BESU_OPTS='-XX:MaxRAMPercentagevfcx=80.0 -XshowSettings:vm' \
 
