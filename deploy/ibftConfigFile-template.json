@@ -3,7 +3,7 @@
       "config": {
          "chainId": 1337,
          "muirglacierblock": 0,
-         "qbft": {
+         "ibft2": {
            "blockperiodseconds": 1,
            "epochlength": 30000,
            "requesttimeoutseconds": 2
