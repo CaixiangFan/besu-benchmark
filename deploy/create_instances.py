@@ -32,8 +32,8 @@ def create_instance(conn, instance_name, user_data, flavor_name):
                                     security_groups=[{'name': security_group.name}], 
                                     key_name=key.name,
                                     user_data=user_data)
-    instance = conn.compute.wait_for_server(instance)
-    return(instance)
+    # instance = conn.compute.wait_for_server(instance)
+    # return(instance)
 
 def flush_redis(watchdog_addr):
         hosts = Redis(host=watchdog_addr, port=6379, db=1)
@@ -44,7 +44,7 @@ def flush_redis(watchdog_addr):
         logs.flushdb()
 
 def deploy(network_size, flavor_name, watchdog_address):
-    instances = {}
+    # instances = {}
     conn = create_connection()
     for server in conn.compute.servers():
         if(re.match(r'besu-\d+', server.name)):
@@ -55,14 +55,14 @@ def deploy(network_size, flavor_name, watchdog_address):
     # update post creation scripts
     with open('configuration-script.sh') as f:
         post_creation_command = f.read()
-        post_creation_command=post_creation_command[:-2] + str(8) + post_creation_command[-1]
-    user_data = base64.b64encode(post_creation_command.encode("utf-8")).decode('utf-8')
+        new_command = post_creation_command[:-2] + str(network_size) + post_creation_command[-1]
+    user_data = base64.b64encode(new_command.encode("utf-8")).decode('utf-8')
     
     for id in range(network_size):
         instance_name = 'besu-'+str(id+1)
         instance = create_instance(conn=conn, instance_name=instance_name, user_data=user_data, flavor_name=flavor_name)
-        instances[instance.name] = instance.addresses
-    return instances
+        # instances[instance.name] = instance.addresses
+    # return instances
 
 
 if __name__ == "__main__":
