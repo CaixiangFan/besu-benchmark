@@ -1,4 +1,5 @@
 import re, base64, sys
+from time import sleep, time
 import openstack
 from redis import Redis
 from dotenv import dotenv_values
@@ -25,15 +26,13 @@ def create_instance(conn, instance_name, user_data, flavor_name):
     network = conn.network.find_network("rrg-khazaei-network")
     security_group = conn.network.find_security_group("open")
     key = conn.compute.find_keypair("bpet")
-    instance = conn.compute.create_server(name=instance_name, 
-                                    flavor_id=flavor.id, 
-                                    image_id=image.id, 
-                                    networks=[{"uuid": network.id}], 
-                                    security_groups=[{'name': security_group.name}], 
-                                    key_name=key.name,
-                                    user_data=user_data)
-    # instance = conn.compute.wait_for_server(instance)
-    # return(instance)
+    conn.compute.create_server(name=instance_name, 
+                        flavor_id=flavor.id, 
+                        image_id=image.id, 
+                        networks=[{"uuid": network.id}], 
+                        security_groups=[{'name': security_group.name}], 
+                        key_name=key.name,
+                        user_data=user_data)
 
 def flush_redis(watchdog_addr):
         hosts = Redis(host=watchdog_addr, port=6379, db=1)
@@ -44,25 +43,25 @@ def flush_redis(watchdog_addr):
         logs.flushdb()
 
 def deploy(network_size, flavor_name, watchdog_address):
-    # instances = {}
     conn = create_connection()
     for server in conn.compute.servers():
         if(re.match(r'besu-\d+', server.name)):
-            print("Please delete all current besu nodes, then deploy a new network!")
-            return
+            # print("Please delete all current besu nodes, then deploy a new network!")
+            # return
+            print("Deleting instance ", server.name)
+            conn.compute.delete_server(server.name)
+    sleep(60)
     print("Flushing redis dbs...")
     flush_redis(watchdog_address)
     # update post creation scripts
     with open('configuration-script.sh') as f:
         post_creation_command = f.read()
-        new_command = post_creation_command[:-2] + str(network_size) + post_creation_command[-1]
+        new_command = post_creation_command[:-3] + str(16) + post_creation_command[-2:]
     user_data = base64.b64encode(new_command.encode("utf-8")).decode('utf-8')
     
     for id in range(network_size):
         instance_name = 'besu-'+str(id+1)
-        instance = create_instance(conn=conn, instance_name=instance_name, user_data=user_data, flavor_name=flavor_name)
-        # instances[instance.name] = instance.addresses
-    # return instances
+        create_instance(conn=conn, instance_name=instance_name, user_data=user_data, flavor_name=flavor_name)
 
 
 if __name__ == "__main__":
