@@ -18,10 +18,7 @@ def create_connection():
         app_version='1.0',
     )
 
-def create_instance(conn, instance_name, flavor_name):
-    with open('configuration-script.sh') as f:
-        post_creation_command = f.read()
-    userdata = base64.b64encode(post_creation_command.encode("utf-8")).decode('utf-8')
+def create_instance(conn, instance_name, user_data, flavor_name):
     print("Creating instance ", instance_name)
     flavor = conn.compute.find_flavor(flavor_name)
     image = conn.compute.find_image("besu-base")
@@ -34,10 +31,9 @@ def create_instance(conn, instance_name, flavor_name):
                                     networks=[{"uuid": network.id}], 
                                     security_groups=[{'name': security_group.name}], 
                                     key_name=key.name,
-                                    user_data=userdata)
+                                    user_data=user_data)
     instance = conn.compute.wait_for_server(instance)
     return(instance)
-
 
 def flush_redis(watchdog_addr):
         hosts = Redis(host=watchdog_addr, port=6379, db=1)
@@ -56,9 +52,15 @@ def deploy(network_size, flavor_name, watchdog_address):
             return
     print("Flushing redis dbs...")
     flush_redis(watchdog_address)
+    # update post creation scripts
+    with open('configuration-script.sh') as f:
+        post_creation_command = f.read()
+        post_creation_command=post_creation_command[:-2] + str(8) + post_creation_command[-1]
+    user_data = base64.b64encode(post_creation_command.encode("utf-8")).decode('utf-8')
+    
     for id in range(network_size):
         instance_name = 'besu-'+str(id+1)
-        instance = create_instance(conn=conn, instance_name=instance_name, flavor_name=flavor_name)
+        instance = create_instance(conn=conn, instance_name=instance_name, user_data=user_data, flavor_name=flavor_name)
         instances[instance.name] = instance.addresses
     return instances
 
