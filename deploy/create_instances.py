@@ -49,14 +49,14 @@ def deploy(network_size, flavor_name, watchdog_address):
             # print("Please delete all current besu nodes, then deploy a new network!")
             # return
             print("Deleting instance ", server.name)
-            conn.compute.delete_server(server.name)
-    sleep(60)
+            conn.compute.delete_server(server, force=True)
+    sleep(30)
     print("Flushing redis dbs...")
     flush_redis(watchdog_address)
     # update post creation scripts
     with open('configuration-script.sh') as f:
         post_creation_command = f.read()
-        new_command = post_creation_command[:-3] + str(16) + post_creation_command[-2:]
+        new_command = post_creation_command[:-3] + str(network_size) + post_creation_command[-2:]
     user_data = base64.b64encode(new_command.encode("utf-8")).decode('utf-8')
     
     for id in range(network_size):
