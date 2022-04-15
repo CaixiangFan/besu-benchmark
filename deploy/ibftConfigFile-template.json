@@ -3,10 +3,9 @@
       "config": {
          "chainId": 1337,
          "muirglacierblock": 0,
-         "qbft": {
+         "clique": {
            "blockperiodseconds": 1,
-           "epochlength": 30000,
-           "requesttimeoutseconds": 2
+           "epochlength": 30000
          }
        },
        "nonce": "0x0",
