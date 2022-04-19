@@ -17,6 +17,11 @@ else:
     print('Default values have been overwritten.')
     WATCHDOG_ADDRESS = sys.argv[1]
     NODE_COUNT = int(sys.argv[2])
+# default consensus is ibft
+CONSENSUS = "ibft"
+if len(sys.argv) > 3:
+    # options: clique, ibft
+    CONSENSUS = sys.argv[3]
 
 # time.sleep(5)
 hostname = socket.gethostname()
@@ -57,8 +62,20 @@ try:
         subprocess.run(['sh', 'create_artifacts.sh'])
         time.sleep(20 + NODE_COUNT * 0.2)
         # Push genesis to redis
-        with open('networkFiles/genesis.json', 'r') as f:
-            genesis = json.load(f)
+        if CONSENSUS == "clique":
+            pre = "0x0000000000000000000000000000000000000000000000000000000000000000"
+            post = "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+            dirs = os.listdir('networkFiles/keys')
+            nodeAddrs = ""
+            for dir in dirs:
+                if '0x' in dir:
+                    nodeAddrs = nodeAddrs + dir[2:]
+            with open('cliqueGenesis.json', 'r') as f:
+                genesis = json.load(f)
+                genesis['extraData'] = pre + nodeAddrs + post
+        else:
+            with open('networkFiles/genesis.json', 'r') as f:
+                genesis = json.load(f)
         redis_enode.set("genesis", json.dumps(genesis))
         # Push keys to redis
         for dirname in os.listdir('networkFiles/keys'):
