@@ -4,9 +4,9 @@
          "chainId": 1337,
          "muirglacierblock": 0,
          "qbft": {
-           "blockperiodseconds": 4,
+           "blockperiodseconds": 2,
            "epochlength": 30000,
-           "requesttimeoutseconds": 8
+           "requesttimeoutseconds": 4
          }
        },
        "nonce": "0x0",
