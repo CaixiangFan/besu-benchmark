@@ -6,13 +6,15 @@ venv
 .DS_Store
 .vscode/
 
-# csv and log data
+# csv, log data, plots
 *.csv
 *.log
 *.pem
+*.png
 
 # caliper benchmark credentials and results
 caliper-benchmarks/reports
 *.html
 /data
 caliper-benchmarks/*.env
+/src/data
