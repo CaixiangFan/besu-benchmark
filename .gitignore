@@ -17,5 +17,8 @@ venv
 caliper-benchmarks/reports
 *.html
 /data
-caliper-benchmarks/*.env
+*.env
 /src/data
+
+# zip file
+*.zip
