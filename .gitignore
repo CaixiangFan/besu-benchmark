@@ -12,6 +12,7 @@ venv
 *.pem
 *.png
 *.pdf
+data/
 
 # caliper benchmark credentials and results
 caliper-benchmarks/reports
