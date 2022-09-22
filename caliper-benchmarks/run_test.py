@@ -1,4 +1,9 @@
-import yaml, subprocess, os, json, sys, re
+import yaml
+import subprocess
+import os
+import json
+import sys
+import re
 from datetime import datetime
 import pandas as pd
 import numpy as np
@@ -12,9 +17,11 @@ env = dotenv_values("cc.env")
 # sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 # sudo chmod +x /usr/local/bin/docker-compose
 # python3 -m pip install PyYAML pandas python-dotenv openstacksdk
-# cd bpet; mkdir data; cd caliper-benchmarks; mkdir reports 
-# scp cc.env to bpet/caliper-benchmarks; scp bpet/data/rrg-bpet to bpet/data/: 
+# cd bpet; mkdir data; cd caliper-benchmarks; mkdir reports
+# scp cc.env to bpet/caliper-benchmarks; scp bpet/data/rrg-bpet to bpet/data/:
 # run test
+
+
 def create_connection():
     return openstack.connect(
         auth_url=env['OS_AUTH_URL'],
@@ -28,6 +35,7 @@ def create_connection():
         app_name='bpet',
         app_version='1.0',
     )
+
 
 def collect_info():
     conn = create_connection()
@@ -47,7 +55,7 @@ def collect_info():
 
             rows.append(row)
     df = pd.DataFrame(np.array(rows),
-        columns=['NodeName', 'IP', 'InstanceID', 'HostID'])
+                      columns=['NodeName', 'IP', 'InstanceID', 'HostID'])
     # sort dataframe
     df['Index'] = [int(name.split('-')[1]) for name in df.NodeName]
     df = df.set_index(keys=df.Index).drop(labels='Index', axis=1).sort_index()
@@ -56,16 +64,19 @@ def collect_info():
         json.dump({'nodeinfo': rows}, f, indent=4)
     return df
 
+
 def setup_monitors(df):
     benchconfig = 'benchmarks/scenario/simple/config.yaml'
-    with open(benchconfig,'r') as f:
-        y=yaml.safe_load(f)
+    with open(benchconfig, 'r') as f:
+        y = yaml.safe_load(f)
         y['monitors']['resource'][0]['options']['containers'] = []
         for _, row in df.iterrows():
-            container = 'http://' + row.IP +':2375/' + row.NodeName
-            y['monitors']['resource'][0]['options']['containers'].append(container)
+            container = 'http://' + row.IP + ':2375/' + row.NodeName
+            y['monitors']['resource'][0]['options']['containers'].append(
+                container)
     with open(benchconfig, 'w') as f:
         yaml.dump(y, f, default_flow_style=False, sort_keys=False, indent=4)
+
 
 def run(SEND_RATES, RPC_IP):
     connection_url = "ws://" + RPC_IP + ":8546"
@@ -81,44 +92,48 @@ def run(SEND_RATES, RPC_IP):
     timestampStr = datetime.now().strftime("%Y%m%d-%H%M%S")
     directory = 'reports/' + timestampStr
     path = os.path.join(os.getcwd(), directory)
-    
+
     os.mkdir(path)
 
-    replicas = 5 # test replicas for each send rate
-    rounds = 3 # test rounds: open, query and transfer
+    replicas = 5  # test replicas for each send rate
+    rounds = 3  # test rounds: open, query and transfer
     for tps in SEND_RATES:
-        with open(benchconfig,'r') as f:
-            y=yaml.safe_load(f)
+        with open(benchconfig, 'r') as f:
+            y = yaml.safe_load(f)
             for i in range(rounds):
                 y['test']['rounds'][i]['rateControl']['opts']['tps'] = tps
-        with open(benchconfig,'w') as f:
-            yaml.dump(y,f,default_flow_style=False, sort_keys=False, indent=4)
+        with open(benchconfig, 'w') as f:
+            yaml.dump(y, f, default_flow_style=False,
+                      sort_keys=False, indent=4)
 
         for i in range(replicas):
             subprocess.run(['docker-compose', 'up'])
-            subprocess.run(['mv', 'report.html', '{}/report-{}-{}.html'.format(directory, tps, i+1)])
+            subprocess.run(
+                ['mv', 'report.html', '{}/report-{}-{}.html'.format(directory, tps, i+1)])
             subprocess.run(['sleep', '10'])
+
 
 def collect_log(df, key, since):
     print('Starting to collect logs on each node:')
     for _, row in df.iterrows():
-        COMMAND = 'docker logs --since {} {} > {}.log'.format(since, row['NodeName'], row['NodeName'])
-        subprocess.Popen(["ssh", "-i", key, 
-                        "-o", "StrictHostKeyChecking=no", "ubuntu@%s" % row['IP'], COMMAND],
-                        shell=False,
-                        stdout=subprocess.PIPE,
-                        stderr=subprocess.PIPE)
+        COMMAND = 'docker logs --since {} {} > {}.log'.format(
+            since, row['NodeName'], row['NodeName'])
+        subprocess.Popen(["ssh", "-i", key,
+                          "-o", "StrictHostKeyChecking=no", "ubuntu@%s" % row['IP'], COMMAND],
+                         shell=False,
+                         stdout=subprocess.PIPE,
+                         stderr=subprocess.PIPE)
 
     subprocess.run(['sleep', '10'])
-    
+
     timestampStr = datetime.now().strftime("%Y%m%d-%H%M%S")
     directory = '../data/logs-' + timestampStr
     log_path = os.path.join(os.getcwd(), directory)
     os.mkdir(log_path)
     # collect besu logs
     for _, row in df.iterrows():
-        subprocess.run(['scp', '-i', key, "-o", "StrictHostKeyChecking=no", 
-        "ubuntu@{}:/home/ubuntu/{}.log".format(row['IP'], row.NodeName), log_path])
+        subprocess.run(['scp', '-i', key, "-o", "StrictHostKeyChecking=no",
+                        "ubuntu@{}:/home/ubuntu/{}.log".format(row['IP'], row.NodeName), log_path])
     # collect caliper logs
     subprocess.run(['mv', 'caliper.log', log_path])
     # collect node info json data
@@ -144,7 +159,8 @@ if __name__ == "__main__":
         rpcIP = sys.argv[1]
     # restart besu containers
     for ip in df.IP.values:
-        os.system(f"""ssh -o "StrictHostKeyChecking no" -i ../data/rrg-bpet ubuntu@{ip} "docker ps -aq | xargs docker restart" """)
+        os.system(
+            f"""ssh -o "StrictHostKeyChecking no" -i ../data/rrg-bpet ubuntu@{ip} "docker ps -aq | xargs docker restart" """)
     # sleep for 2 min to wait for synchronization
     time.sleep(120)
     # run test
