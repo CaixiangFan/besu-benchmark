@@ -2,6 +2,7 @@ import re
 import base64
 import sys
 from time import sleep, time
+from xml.dom import NotFoundErr
 import openstack
 from redis import Redis
 from dotenv import dotenv_values
@@ -48,6 +49,25 @@ def flush_redis(watchdog_addr):
     logs.flushdb()
 
 
+def get_nodeaddr(conn, instance_name):
+    serverObj = conn.compute.find_server(instance_name)
+    try:
+        serverInfo = conn.compute.get_server(serverObj)
+    except NotFoundErr:
+        print('Server not ready')
+        return 'Server not ready'
+    else:
+        return serverInfo.addresses['rrg-khazaei-network'][0]['addr']
+
+
+def get_nodes_address(network_size):
+    conn = create_connection()
+    for id in range(network_size):
+        instance_name = 'besu-'+str(id+1)
+        ip = get_nodeaddr(conn, instance_name)
+        print('{} {}'.format(instance_name, ip))
+
+
 def deploy(network_size, flavor_name, watchdog_address):
     conn = create_connection()
     for server in conn.compute.servers():
@@ -90,3 +110,7 @@ if __name__ == "__main__":
             network_size, flavor_name))
 
     deploy(network_size, flavor_name, watchdog_address)
+
+    sleep(120)
+
+    get_nodes_address(network_size)
