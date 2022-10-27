@@ -17,52 +17,52 @@
        "mixHash": "0x63746963616c2062797a616e74696e65206661756c7420746f6c6572616e6365",
        "coinbase": "0x0000000000000000000000000000000000000000",
        "alloc": {
-          "0xd8d01D035C8B53002bBD3E69a872D4D5501DcbF4": {
+          "d8d01D035C8B53002bBD3E69a872D4D5501DcbF4": {
              "privateKey": "465d0992bb1fb9ca9b7ccaaf55c6a9b13b77c8b514bfe65b6dbf88412dcefb9b",
              "comment": "Account: ETKreceiver",
              "balance": "10000000000000000000000"
           },
-          "0xad7b922d1741061b62291968314756449E476075": {
+          "ad7b922d1741061b62291968314756449E476075": {
             "privateKey": "fd06c9daac6b9778869f6e5cd25dfbd842f90947c4615a71d2a8060a679aa7e9",
             "comment": "Account: Supplier1",
             "balance": "20000000000000000000000"
           },
-          "0x2430c90f41Cd917BA43c4370177A77D08920D56E": {
+          "2430c90f41Cd917BA43c4370177A77D08920D56E": {
             "privateKey": "695f74506ee5388747c3b24700cd9abf5a9887b570cc1ebd97ba55ac592e7a25",
             "comment": "Account: Supplier2",
             "balance": "30000000000000000000000"
           },
-          "0x94dDB99055edD9eaE2f4F324E1b639F6285b3ad0": {
+          "94dDB99055edD9eaE2f4F324E1b639F6285b3ad0": {
             "privateKey": "3018247c3a086863faf85be656387882a5e2af01ed86cb7a15629744d027ad70",
             "comment": "Account: Supplier3",
             "balance": "40000000000000000000000"
           },
-          "0x754d0240b9162f50664aED4E10DD99b1574F1dD8": {
+          "754d0240b9162f50664aED4E10DD99b1574F1dD8": {
             "privateKey": "5e9ebfd1bce77606a92f9611f8650665cfbaf3852e0451ff75ef84aea9e794e4",
             "comment": "Account: Supplier4",
             "balance": "50000000000000000000000"
           },
-          "0x0bF1Ae7d00Eb3C93225C95B3b483bdD59Ef3F567": {
+          "0bF1Ae7d00Eb3C93225C95B3b483bdD59Ef3F567": {
             "privateKey": "a6ea410d2c1aa2575071a51200e6b0d5e62bcb7dab1c426b0695e3e0ac82a751",
             "comment": "Account: Consumer1",
             "balance": "60000000000000000000000"
           },
-          "0x2FbA718763f52cfE9112F6f2fcAa81976Ad4C89F": {
+          "2FbA718763f52cfE9112F6f2fcAa81976Ad4C89F": {
             "privateKey": "2af936030da419d3f3895509d36f5b013ac0a7b5b834d6ebd53f2c791efb74fa",
             "comment": "Account: Consumer2",
             "balance": "70000000000000000000000"
           },
-          "0xd02DFBFc0FcA0BC208cd8bAdF0E52a31e5687C54": {
+          "d02DFBFc0FcA0BC208cd8bAdF0E52a31e5687C54": {
             "privateKey": "ab93517ccd723fb186b399b1bf2672dbdabe44eff2a5a9014c2399323aa44173",
             "comment": "Account: Consumer3",
             "balance": "80000000000000000000000"
           },
-          "0xa94b985FC7d42811c00F766f6adeB4e25763b353": {
+          "a94b985FC7d42811c00F766f6adeB4e25763b353": {
             "privateKey": "c02e976c1e487d9282dc740b056b008475cb56777b8a91c55ad899f90dcb398a",
             "comment": "Account: Consumer4",
             "balance": "90000000000000000000000"
           },
-          "0x4c4F4178198f8545C70f0Fe70BdCF2Cd56e26840": {
+          "4c4F4178198f8545C70f0Fe70BdCF2Cd56e26840": {
             "privateKey": "b1eecabf290fa3300291f6c23fa5674f84407510b9975e4f8cfbe052038bc20b",
             "comment": "Account: BesuAdmin",
             "balance": "100000000000000000000000"
