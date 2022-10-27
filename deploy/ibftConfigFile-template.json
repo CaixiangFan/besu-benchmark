@@ -17,54 +17,54 @@
        "mixHash": "0x63746963616c2062797a616e74696e65206661756c7420746f6c6572616e6365",
        "coinbase": "0x0000000000000000000000000000000000000000",
        "alloc": {
-          "fe3b557e8fb62b89f4916b721be55ceb828dbd73": {
-             "privateKey": "8f2a55949038a9610f50fb23b5883af3b4ecb3c3bb792cbcefbd1542c692be63",
-             "comment": "private key and this comment are ignored.  In a real chain, the private key should NOT be stored",
+          "d8d01D035C8B53002bBD3E69a872D4D5501DcbF4": {
+             "privateKey": "465d0992bb1fb9ca9b7ccaaf55c6a9b13b77c8b514bfe65b6dbf88412dcefb9b",
+             "comment": "Account: ETKreceiver",
              "balance": "10000000000000000000000"
           },
-          "627306090abaB3A6e1400e9345bC60c78a8BEf57": {
-            "privateKey": "c87509a1c067bbde78beb793e6fa76530b6382a4c0241e5e4a9ec0a0f44dc0d3",
-            "comment": "private key and this comment are ignored.  In a real chain, the private key should NOT be stored",
+          "ad7b922d1741061b62291968314756449E476075": {
+            "privateKey": "fd06c9daac6b9778869f6e5cd25dfbd842f90947c4615a71d2a8060a679aa7e9",
+            "comment": "Account: Supplier1",
             "balance": "20000000000000000000000"
           },
-          "212C6dc2c64D5134aee566d761fF49009C02D97e": {
-            "privateKey": "7f02f664c60f04101f9d518b360a5987e92caf83ae6fa163eeccca7c35ae79fa",
-            "comment": "private key and this comment are ignored.  In a real chain, the private key should NOT be stored",
+          "2430c90f41Cd917BA43c4370177A77D08920D56E": {
+            "privateKey": "695f74506ee5388747c3b24700cd9abf5a9887b570cc1ebd97ba55ac592e7a25",
+            "comment": "Account: Supplier2",
             "balance": "30000000000000000000000"
           },
-          "0BCf26e7fbf1061403ab4B4308DBb9299A1da707": {
-            "privateKey": "3a01e8c66059cc6e47e37fc1847c9ee5067c91f804cd09e5ea2de891b50eb43a",
-            "comment": "private key and this comment are ignored.  In a real chain, the private key should NOT be stored",
+          "94dDB99055edD9eaE2f4F324E1b639F6285b3ad0": {
+            "privateKey": "3018247c3a086863faf85be656387882a5e2af01ed86cb7a15629744d027ad70",
+            "comment": "Account: Supplier3",
             "balance": "40000000000000000000000"
           },
-          "B58e984728ED1D1Db3B9ca88849b5cF393699677": {
-            "privateKey": "f9de6db2429159ea2b7c5590e1ca0dfe8ba15cb3cdcd46246c56892a7ad71db5",
-            "comment": "private key and this comment are ignored.  In a real chain, the private key should NOT be stored",
+          "754d0240b9162f50664aED4E10DD99b1574F1dD8": {
+            "privateKey": "5e9ebfd1bce77606a92f9611f8650665cfbaf3852e0451ff75ef84aea9e794e4",
+            "comment": "Account: Supplier4",
             "balance": "50000000000000000000000"
           },
-          "4f395cCCd5d039aD79df1Fb68625E54E23f01d83": {
-            "privateKey": "6363e6f931ad790066be6cf6f84f9a5330461957b7007d9130bbc00e012d67c9",
-            "comment": "private key and this comment are ignored.  In a real chain, the private key should NOT be stored",
+          "0bF1Ae7d00Eb3C93225C95B3b483bdD59Ef3F567": {
+            "privateKey": "a6ea410d2c1aa2575071a51200e6b0d5e62bcb7dab1c426b0695e3e0ac82a751",
+            "comment": "Account: Consumer1",
             "balance": "60000000000000000000000"
           },
-          "e1E72CCF77450f43370ae7312933b0A0c6A7A651": {
-            "privateKey": "2de3e10a11c01118862f6d106512d6025a1c8ab9731e930bb4faf20a868b354c",
-            "comment": "private key and this comment are ignored.  In a real chain, the private key should NOT be stored",
+          "2FbA718763f52cfE9112F6f2fcAa81976Ad4C89F": {
+            "privateKey": "2af936030da419d3f3895509d36f5b013ac0a7b5b834d6ebd53f2c791efb74fa",
+            "comment": "Account: Consumer2",
             "balance": "70000000000000000000000"
           },
-          "355bC28a0eaee946C169df7A801623f3f6Af7B81": {
-            "privateKey": "d219d5823d09dba82a5da4261b9d9c6d84ae522114c958311665204e20337ad7",
-            "comment": "private key and this comment are ignored.  In a real chain, the private key should NOT be stored",
+          "d02DFBFc0FcA0BC208cd8bAdF0E52a31e5687C54": {
+            "privateKey": "ab93517ccd723fb186b399b1bf2672dbdabe44eff2a5a9014c2399323aa44173",
+            "comment": "Account: Consumer3",
             "balance": "80000000000000000000000"
           },
-          "8d99DE09916B459545CFD9e1e4f9f03E634daf96": {
-            "privateKey": "4d065dc958ef3f8f292ddfa3c1280b47e8e9875a06968a07a70c199b9438a628",
-            "comment": "private key and this comment are ignored.  In a real chain, the private key should NOT be stored",
+          "a94b985FC7d42811c00F766f6adeB4e25763b353": {
+            "privateKey": "c02e976c1e487d9282dc740b056b008475cb56777b8a91c55ad899f90dcb398a",
+            "comment": "Account: Consumer4",
             "balance": "90000000000000000000000"
           },
-          "f83D5aCb2DCBDbBE081407bA7113d7adb7aC6835": {
-            "privateKey": "c42860ede970d7d50e3deda234776bd85d972335263033594dbb2587c964e637",
-            "comment": "private key and this comment are ignored.  In a real chain, the private key should NOT be stored",
+          "4c4F4178198f8545C70f0Fe70BdCF2Cd56e26840": {
+            "privateKey": "b1eecabf290fa3300291f6c23fa5674f84407510b9975e4f8cfbe052038bc20b",
+            "comment": "Account: BesuAdmin",
             "balance": "100000000000000000000000"
           }
          }
