@@ -30,3 +30,5 @@ rpc-ws-api=["ADMIN", "IBFT", "QBFT", "CLIQUE", "ETH", "NET", "TXPOOL", "WEB3"]
 metrics-push-enabled=true
 metrics-push-port=9091
 # metrics-push-host="0.0.0.0"
+
+tx-pool-retention-hours=1
