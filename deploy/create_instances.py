@@ -1,6 +1,7 @@
 import re
 import base64
 import sys
+import json
 from time import sleep, time
 from xml.dom import NotFoundErr
 import openstack
@@ -62,10 +63,14 @@ def get_nodeaddr(conn, instance_name):
 
 def get_nodes_address(network_size):
     conn = create_connection()
+    nodeIPs = {}
     for id in range(network_size):
         instance_name = 'besu-'+str(id+1)
         ip = get_nodeaddr(conn, instance_name)
-        print('{} {}'.format(instance_name, ip))
+        nodeIPs[instance_name] = ip
+    print(nodeIPs)
+    with open('nodes.json', 'w') as file:
+        json.dump(nodeIPs, file, indent=4)
 
 
 def deploy(network_size, flavor_name, watchdog_address):
