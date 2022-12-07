@@ -6,6 +6,9 @@ nat-method="AUTO"
 host-allowlist=["*"]
 min-gas-price=0
 
+#tx-pool related
+tx-pool-retention-hours=1
+
 # P2P related
 
 p2p-host="192.168.226.147"
