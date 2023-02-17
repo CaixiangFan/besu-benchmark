@@ -7,12 +7,12 @@ sudo groupadd docker
 sudo usermod -aG docker ubuntu
 newgrp docker
 
-docker pull hyperledger/besu:21.10
+docker pull hyperledger/besu:23.1.0
 sudo -H -u ubuntu bash -c 'curl -fsSL https://bootstrap.pypa.io/get-pip.py -o get-pip.py'
 python3 get-pip.py
 sudo -H -u ubuntu bash -c 'pip install redis'
 sudo -H -u ubuntu bash -c 'pip install toml'
-# enable docker remote API 
+# enable docker remote API
 sudo sed -i '/ExecStart/s/$/ -H=tcp:\/\/0.0.0.0:2375/' /lib/systemd/system/docker.service
 sudo systemctl daemon-reload
 sudo service docker restart
