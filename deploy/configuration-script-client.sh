@@ -21,7 +21,7 @@ sudo apt install ntp -y
 # Configure NTP Client
 echo 'server watchdog prefer iburst' | sudo tee -a /etc/ntp.conf
 sudo systemctl restart ntp
-sudo -H -u ubuntu bash -c 'git clone https://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@github.com/CaixiangFan/bpet.git'
+sudo -H -u ubuntu bash -c 'git clone https://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@github.com/CaixiangFan/bpet.git'
 sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
 python3 -m pip install PyYAML pandas python-dotenv openstacksdk

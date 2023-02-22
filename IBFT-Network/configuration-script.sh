@@ -5,6 +5,6 @@
 #     --ipv6 \
 #     besu-network \
 cd /home/ubuntu || exit
-sudo -H -u ubuntu bash -c 'git clone https://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@github.com/CaixiangFan/bpet.git'
+sudo -H -u ubuntu bash -c 'git clone https://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@github.com/CaixiangFan/bpet.git'
 cd bpet/IBFT-Network || exit
 sudo -H -u ubuntu bash -c 'python3 deploy.py 4'

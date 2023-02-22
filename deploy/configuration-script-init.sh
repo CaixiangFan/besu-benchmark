@@ -17,6 +17,6 @@ sudo sed -i '/ExecStart/s/$/ -H=tcp:\/\/0.0.0.0:2375/' /lib/systemd/system/docke
 sudo systemctl daemon-reload
 sudo service docker restart
 sudo apt install iftop
-sudo -H -u ubuntu bash -c 'git clone https://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0@github.com/CaixiangFan/bpet.git'
+sudo -H -u ubuntu bash -c 'git clone https://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@github.com/CaixiangFan/bpet.git'
 cd bpet/deploy || exit
 sudo -H -u ubuntu bash -c 'python3 deploy.py 192.168.23.64 6'
