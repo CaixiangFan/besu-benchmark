@@ -69,14 +69,14 @@ def get_nodes_address(network_size):
         ip = get_nodeaddr(conn, instance_name)
         nodeIPs[instance_name] = ip
     print(nodeIPs)
-    with open('nodes.json', 'w') as file:
+    with open('../bpet-contracts/scripts/nodes.json', 'w') as file:
         json.dump(nodeIPs, file, indent=4)
 
 
 def deploy(network_size, flavor_name, watchdog_address):
     conn = create_connection()
     for server in conn.compute.servers():
-        if(re.match(r'besu-\d+', server.name)):
+        if (re.match(r'besu-\d+', server.name)):
             # print("Please delete all current besu nodes, then deploy a new network!")
             # return
             print("Deleting instance ", server.name)
