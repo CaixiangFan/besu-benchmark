@@ -69,7 +69,7 @@ def get_nodes_address(network_size):
         ip = get_nodeaddr(conn, instance_name)
         nodeIPs[instance_name] = ip
     print(nodeIPs)
-    with open('../bpet-contracts/scripts/nodes.json', 'w') as file:
+    with open('../../bpet-contracts/scripts/nodes.json', 'w') as file:
         json.dump(nodeIPs, file, indent=4)
 
 
