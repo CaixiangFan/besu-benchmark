@@ -7,11 +7,8 @@ venv
 .vscode/
 
 # csv, log data, plots
-*.csv
 *.log
 *.pem
-*.png
-*.pdf
 data/
 
 # caliper benchmark credentials and results
